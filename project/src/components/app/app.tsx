@@ -7,13 +7,13 @@ type AppProps = {
   movieCount: number;
 }
 
-function App(movieName: AppProps, movieGenre: AppProps, movieYear: AppProps, movieCount: AppProps): JSX.Element {
+function App({movieName, movieGenre, movieYear, movieCount}: AppProps): JSX.Element {
   return (
     < MainPageScreen
-      {...movieName}
-      {...movieGenre}
-      {...movieYear}
-      {...movieCount}
+      movieName={movieName}
+      movieGenre={movieGenre}
+      movieYear={movieYear}
+      movieCount={movieCount}
     />);
 }
 
