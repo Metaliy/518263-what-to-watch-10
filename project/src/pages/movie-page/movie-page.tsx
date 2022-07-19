@@ -1,4 +1,10 @@
+import { useParams } from 'react-router-dom';
+import { mockFilms } from '../../const';
+
+
 function MoviePageScreen() {
+  const { id } = useParams();
+  const film = mockFilms.find((element) => element.id === id);
   return (
     <>
       <section className="film-card film-card--full">
@@ -32,10 +38,10 @@ function MoviePageScreen() {
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">The Grand Budapest Hotel</h2>
+              <h2 className="film-card__title">{film?.Name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">Drama</span>
-                <span className="film-card__year">2014</span>
+                <span className="film-card__genre">{film?.Genre}</span>
+                <span className="film-card__year">{film?.Year}</span>
               </p>
 
               <div className="film-card__buttons">

@@ -1,4 +1,9 @@
+import { useParams } from 'react-router-dom';
+import { mockFilms } from '../../const';
+
 function AddReviewPageScreen() {
+  const { id } = useParams();
+  const film = mockFilms.find((element) => element.id === id);
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">
@@ -20,7 +25,7 @@ function AddReviewPageScreen() {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">The Grand Budapest Hotel</a>
+                <a href="film-page.html" className="breadcrumbs__link">{film?.Name}</a>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link">Add review</a>
