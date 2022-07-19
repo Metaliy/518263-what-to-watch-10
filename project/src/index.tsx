@@ -5,7 +5,8 @@ import App from './components/app/app';
 const Movie = {
   Name: 'The Grand Budapest Hotel',
   Genre: 'Drama',
-  Year: 2014
+  Year: 2014,
+  id: 0
 };
 
 const Setting = {
@@ -25,6 +26,7 @@ root.render(
       movieGenre = {Movie.Genre}
       movieYear = {Movie.Year}
       movieCount = {Setting.MOVIES_COUNT}
+      filmId = {Movie.id}
     />
   </React.StrictMode>,
 );
