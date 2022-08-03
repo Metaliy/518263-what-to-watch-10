@@ -8,16 +8,15 @@ import MyListScreen from '../../pages/my-list-page/my-list-page';
 import PrivateRoute from '../private-route/private-route';
 import SignInPageScreen from '../../pages/sign-in-page/sign-in-page';
 import PlayerPageScreen from '../../pages/player-page/player-page';
+import { Filmslist } from '../../types/films';
+
 
 type AppProps = {
-  movieName: string;
-  movieGenre: string;
-  movieYear: number;
+  mockFilms: Filmslist,
   movieCount: number;
-  filmId: number;
 }
 
-function App({movieName, movieGenre, movieYear, movieCount, filmId}: AppProps): JSX.Element {
+function App({mockFilms, movieCount}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
@@ -25,20 +24,26 @@ function App({movieName, movieGenre, movieYear, movieCount, filmId}: AppProps): 
           path={AppRoute.Root}
           element={
             < MainPageScreen
-              movieName={movieName}
-              movieGenre={movieGenre}
-              movieYear={movieYear}
+              mockFilms={mockFilms}
               movieCount={movieCount}
             />
           }
         />
         <Route
           path={AppRoute.AddReview}
-          element={<AddReviewPageScreen />}
+          element={
+            < AddReviewPageScreen
+              films={mockFilms}
+            />
+          }
         />
         <Route
           path={AppRoute.Player}
-          element={<PlayerPageScreen />}
+          element={
+            <PlayerPageScreen
+              films={mockFilms}
+            />
+          }
         />
         <Route
           path={AppRoute.SignIn}
@@ -48,15 +53,21 @@ function App({movieName, movieGenre, movieYear, movieCount, filmId}: AppProps): 
           path={AppRoute.MyList}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
+              authorizationStatus={AuthorizationStatus.Auth}
             >
-              <MyListScreen />
+              <MyListScreen
+                films={mockFilms}
+              />
             </PrivateRoute>
           }
         />
         <Route
           path={AppRoute.Film}
-          element={<MoviePageScreen />}
+          element={
+            <MoviePageScreen
+              films={mockFilms}
+            />
+          }
         />
         <Route
           path="*"
