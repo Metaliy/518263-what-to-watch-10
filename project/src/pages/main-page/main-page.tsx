@@ -1,21 +1,16 @@
-import SmallMovieCardComponent from '../../components/small-movie-card-component/SmallMovieCardComponent';
+import { Filmslist } from '../../types/films';
+import FilmsListComponent from '../../components/films-list/films-list-component';
+import { Link } from 'react-router-dom';
+import {AppRoute} from '../../const';
+import { logoComponent } from '../../components/logo-component/logo-component';
 
 type MainPageProps = {
-  movieName: string;
-  movieGenre: string;
-  movieYear: number;
+  mockFilms: Filmslist;
   movieCount: number;
 }
 
-const getMovieCardList = (moviesAmount: number, movieCard: JSX.Element): JSX.Element[] => {
-  const moveisList = [];
-  for (let i = 0; i < moviesAmount; i++) {
-    moveisList.push(movieCard);
-  }
-  return moveisList;
-};
 
-function MainPageScreen({movieName, movieGenre, movieYear, movieCount}: MainPageProps): JSX.Element {
+function MainPageScreen({mockFilms, movieCount}: MainPageProps): JSX.Element {
   return (
     <>
       <section className="film-card">
@@ -27,11 +22,7 @@ function MainPageScreen({movieName, movieGenre, movieYear, movieCount}: MainPage
 
         <header className="page-header film-card__head">
           <div className="logo">
-            <a className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
+            {logoComponent()}
           </div>
 
           <ul className="user-block">
@@ -41,7 +32,8 @@ function MainPageScreen({movieName, movieGenre, movieYear, movieCount}: MainPage
               </div>
             </li>
             <li className="user-block__item">
-              <a className="user-block__link">Sign out</a>
+
+              <Link to={AppRoute.SignIn} className="user-block__link">Sign in</Link>
             </li>
           </ul>
         </header>
@@ -53,10 +45,10 @@ function MainPageScreen({movieName, movieGenre, movieYear, movieCount}: MainPage
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{movieName}</h2>
+              <h2 className="film-card__title">{mockFilms[0].Name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{movieGenre}</span>
-                <span className="film-card__year">{movieYear}</span>
+                <span className="film-card__genre">{mockFilms[0].Genre}</span>
+                <span className="film-card__year">{mockFilms[0].Year}</span>
               </p>
 
               <div className="film-card__buttons">
@@ -66,6 +58,12 @@ function MainPageScreen({movieName, movieGenre, movieYear, movieCount}: MainPage
                   </svg>
                   <span>Play</span>
                 </button>
+                <Link className="btn btn--play film-card__button" to={`Player/${ mockFilms[0].id}`}>
+                  <svg viewBox="0 0 19 19" width="19" height="19">
+                    <use xlinkHref="#play-s"></use>
+                  </svg>
+                  <span>Play</span>
+                </Link>
                 <button className="btn btn--list film-card__button" type="button">
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
@@ -117,9 +115,9 @@ function MainPageScreen({movieName, movieGenre, movieYear, movieCount}: MainPage
             </li>
           </ul>
 
-          <div className="catalog__films-list">
-            {getMovieCardList(movieCount, <SmallMovieCardComponent />)}
-          </div>
+
+          {FilmsListComponent(mockFilms)}
+
 
           <div className="catalog__more">
             <button className="catalog__button" type="button">Show more</button>

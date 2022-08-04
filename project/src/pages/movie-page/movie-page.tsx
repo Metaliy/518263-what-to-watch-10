@@ -1,10 +1,15 @@
-import { useParams } from 'react-router-dom';
-import { mockFilms } from '../../const';
+import { Link, useParams } from 'react-router-dom';
+import { logoComponent } from '../../components/logo-component/logo-component';
+import { Film } from '../../types/films';
+
+type MoviePageProps = {
+  films: Film[]
+}
 
 
-function MoviePageScreen() {
+function MoviePageScreen({films}: MoviePageProps) {
   const { id } = useParams();
-  const film = mockFilms.find((element) => element.id === id);
+  const film = films.find((element) => element.id === id);
   return (
     <>
       <section className="film-card film-card--full">
@@ -17,11 +22,7 @@ function MoviePageScreen() {
 
           <header className="page-header film-card__head">
             <div className="logo">
-              <a href="main.html" className="logo__link">
-                <span className="logo__letter logo__letter--1">W</span>
-                <span className="logo__letter logo__letter--2">T</span>
-                <span className="logo__letter logo__letter--3">W</span>
-              </a>
+              {logoComponent()}
             </div>
 
             <ul className="user-block">
@@ -58,7 +59,7 @@ function MoviePageScreen() {
                   <span>My list</span>
                   <span className="film-card__count">9</span>
                 </button>
-                <a href="add-review.html" className="btn film-card__button">Add review</a>
+                <Link to ={`/films/${ id }/review`} className="btn film-card__button">Add review</Link>
               </div>
             </div>
           </div>
