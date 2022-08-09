@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export function logoComponent ():JSX.Element {
+export function LogoComponent ():JSX.Element {
   return (
     <Link to={'/'} className="logo__link">
       <span className="logo__letter logo__letter--1">W</span>

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 export function AddReviewComponent () {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [stateText, setStateText] = useState('');
+
+  const setStateText = useState('')[1];
   return (
     <form action="#" className="add-review__form">
       <div className="rating">

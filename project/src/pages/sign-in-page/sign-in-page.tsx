@@ -1,11 +1,11 @@
-import { logoComponent } from '../../components/logo-component/logo-component';
+import { LogoComponent } from '../../components/logo-component/logo-component';
 
 function SignInPageScreen() {
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
         <div className="logo">
-          {logoComponent()}
+          <LogoComponent />
         </div>
 
         <h1 className="page-title user-page__title">Sign in</h1>

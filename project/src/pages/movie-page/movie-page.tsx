@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { logoComponent } from '../../components/logo-component/logo-component';
+import {LogoComponent} from '../../components/logo-component/logo-component';
 import { Film } from '../../types/films';
 
 type MoviePageProps = {
@@ -22,7 +22,7 @@ function MoviePageScreen({films}: MoviePageProps) {
 
           <header className="page-header film-card__head">
             <div className="logo">
-              {logoComponent()}
+              <LogoComponent />
             </div>
 
             <ul className="user-block">

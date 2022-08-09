@@ -1,12 +1,13 @@
-import { Filmslist } from '../../types/films';
+import { Film } from '../../types/films';
 import { useState } from 'react';
 import SmallMovieCardComponent from '../small-movie-card-component/small-movie-card-component';
 
+type AddReviewPageProps = {
+  films: Film[]
+}
 
-function FilmsListComponent(films: Filmslist): JSX.Element {
-  const [activeCardId, setActiveCard] = useState('');
-  // eslint-disable-next-line no-console
-  console.log(activeCardId);
+function FilmsListComponent({films}: AddReviewPageProps): JSX.Element {
+  const [, setActiveCard] = useState('');
   return (
     <div className="catalog__films-list">
       {films.map((film) => (

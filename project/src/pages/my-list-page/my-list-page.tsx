@@ -1,4 +1,4 @@
-import { logoComponent } from '../../components/logo-component/logo-component';
+import { LogoComponent } from '../../components/logo-component/logo-component';
 import FilmsListComponent from '../../components/films-list/films-list-component';
 import { Film } from '../../types/films';
 
@@ -11,7 +11,7 @@ function MyListScreen({films}: MyListPageProps) {
     <div className="user-page">
       <header className="page-header user-page__head">
         <div className="logo">
-          {logoComponent()}
+          <LogoComponent />
         </div>
 
         <h1 className="page-title user-page__title">My list <span className="user-page__film-count">9</span></h1>
@@ -31,7 +31,7 @@ function MyListScreen({films}: MyListPageProps) {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-          {FilmsListComponent(films)}
+          <FilmsListComponent films={films} />
         </div>
       </section>
 

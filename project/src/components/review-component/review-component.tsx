@@ -1,7 +1,7 @@
 import { Review } from '../../types/reviews';
 
 
-export function reviewComponent (review: Review) {
+export function ReviewComponent (review: Review) {
   return (
     <div className="film-card__reviews-col">
       <div className="review">

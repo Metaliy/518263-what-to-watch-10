@@ -1,11 +1,11 @@
 import { Reviewlist } from '../../types/reviews';
-import { reviewComponent } from '../review-component/review-component';
+import { ReviewComponent } from '../review-component/review-component';
 
-export function reviewListComponent (reviews: Reviewlist) {
+export function ReviewListComponent (reviews: Reviewlist) {
   return (
     <div className="catalog__films-list">
       {reviews.map((review) => (
-        reviewComponent(review)
+        ReviewComponent(review)
       ))}
     </div>
   );

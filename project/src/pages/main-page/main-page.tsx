@@ -2,7 +2,7 @@ import { Filmslist } from '../../types/films';
 import FilmsListComponent from '../../components/films-list/films-list-component';
 import { Link } from 'react-router-dom';
 import {AppRoute} from '../../const';
-import { logoComponent } from '../../components/logo-component/logo-component';
+import { LogoComponent } from '../../components/logo-component/logo-component';
 
 type MainPageProps = {
   mockFilms: Filmslist;
@@ -22,7 +22,7 @@ function MainPageScreen({mockFilms, movieCount}: MainPageProps): JSX.Element {
 
         <header className="page-header film-card__head">
           <div className="logo">
-            {logoComponent()}
+            <LogoComponent />
           </div>
 
           <ul className="user-block">
@@ -52,12 +52,6 @@ function MainPageScreen({mockFilms, movieCount}: MainPageProps): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
-                  <svg viewBox="0 0 19 19" width="19" height="19">
-                    <use xlinkHref="#play-s"></use>
-                  </svg>
-                  <span>Play</span>
-                </button>
                 <Link className="btn btn--play film-card__button" to={`Player/${ mockFilms[0].id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
@@ -116,7 +110,7 @@ function MainPageScreen({mockFilms, movieCount}: MainPageProps): JSX.Element {
           </ul>
 
 
-          {FilmsListComponent(mockFilms)}
+          <FilmsListComponent films={mockFilms} />
 
 
           <div className="catalog__more">

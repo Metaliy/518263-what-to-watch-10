@@ -1,6 +1,6 @@
 import { Film } from '../../types/films';
 import { useParams } from 'react-router-dom';
-import { logoComponent } from '../../components/logo-component/logo-component';
+import { LogoComponent } from '../../components/logo-component/logo-component';
 import {AddReviewComponent} from '../../components/add-review-component/add-review-component';
 
 type AddReviewPageProps = {
@@ -21,7 +21,7 @@ function AddReviewPageScreen({films}: AddReviewPageProps) {
 
         <header className="page-header">
           <div className="logo">
-            {logoComponent()}
+            <LogoComponent />
           </div>
 
           <nav className="breadcrumbs">
@@ -53,7 +53,7 @@ function AddReviewPageScreen({films}: AddReviewPageProps) {
       </div>
 
       <div className="add-review">
-        {AddReviewComponent()}
+        <AddReviewComponent />
       </div>
 
     </section>
