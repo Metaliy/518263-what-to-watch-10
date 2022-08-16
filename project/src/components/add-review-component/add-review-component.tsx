@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 export function AddReviewComponent () {
 
-  const setStateText = useState('')[1];
+  const [, setStateText] = useState('');
   return (
     <form action="#" className="add-review__form">
       <div className="rating">

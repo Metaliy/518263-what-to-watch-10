@@ -3,14 +3,19 @@ import { useState } from 'react';
 import SmallMovieCardComponent from '../small-movie-card-component/small-movie-card-component';
 
 type AddReviewPageProps = {
-  films: Film[]
+  films: Film[],
+  genre?: string
 }
 
-function FilmsListComponent({films}: AddReviewPageProps): JSX.Element {
+function FilmsListComponent({films, genre}: AddReviewPageProps): JSX.Element {
   const [, setActiveCard] = useState('');
+  let filmsArray = films;
+  if (genre) {
+    filmsArray = filmsArray.filter((film) => film.Genre === genre);
+  }
   return (
     <div className="catalog__films-list">
-      {films.map((film) => (
+      {filmsArray.map((film) => (
         SmallMovieCardComponent(film, setActiveCard)
       ))}
     </div>
