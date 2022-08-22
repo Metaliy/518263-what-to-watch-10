@@ -7,7 +7,6 @@ type VideoPlayerComponentProps = {
 }
 
 export function VideoPlayerComponent ({src, poster}:VideoPlayerComponentProps) {
-
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {

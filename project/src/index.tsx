@@ -1,13 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import App from './components/app/app';
 import { mockFilms } from './mocks/films';
-
-
-const Setting = {
-  MOVIES_COUNT: 20,
-
-};
+import { store } from './store';
 
 
 const root = ReactDOM.createRoot(
@@ -16,9 +12,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <App
-      mockFilms = {mockFilms}
-      movieCount = {Setting.MOVIES_COUNT}
-    />
+    <Provider store={store}>
+      <App
+        mockFilms = {mockFilms}
+      />
+    </Provider>
   </React.StrictMode>
 );

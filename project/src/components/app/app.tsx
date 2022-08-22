@@ -12,11 +12,10 @@ import { Filmslist } from '../../types/films';
 
 
 type AppProps = {
-  mockFilms: Filmslist,
-  movieCount: number;
+  mockFilms: Filmslist
 }
 
-function App({mockFilms, movieCount}: AppProps): JSX.Element {
+function App({mockFilms}: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
@@ -25,7 +24,6 @@ function App({mockFilms, movieCount}: AppProps): JSX.Element {
           element={
             < MainPageScreen
               mockFilms={mockFilms}
-              movieCount={movieCount}
             />
           }
         />

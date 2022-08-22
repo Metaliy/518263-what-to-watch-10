@@ -20,3 +20,16 @@ export enum tabNames {
 }
 
 export const timeOut = 1000;
+
+export const genreList = [
+  'All genres',
+  'Comedies',
+  'Crime',
+  'Documentary',
+  'Dramas',
+  'Horror',
+  'Kids & Family',
+  'Romance',
+  'Sci-Fi',
+  'Thrillers'
+];

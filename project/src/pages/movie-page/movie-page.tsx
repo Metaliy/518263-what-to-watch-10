@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import FilmsListComponent from '../../components/films-list/films-list-component';
+import {FilmsListComponent} from '../../components/films-list/films-list-component';
 import {LogoComponent} from '../../components/logo-component/logo-component';
 import { PageTabsComponent } from '../../components/page-tabs-components/page-tabs-component';
 import { Film } from '../../types/films';
@@ -80,7 +80,7 @@ function MoviePageScreen({films}: MoviePageProps) {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <FilmsListComponent films={films} genre={film?.Genre}/>
+          <FilmsListComponent films={films}/>
         </section>
 
         <footer className="page-footer">
