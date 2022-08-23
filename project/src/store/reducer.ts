@@ -1,12 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { mockFilms } from '../mocks/films';
-import { changeGenre, getFilteredOnGenreFilmsList } from './action';
+import { changeGenre, getFilteredOnGenreFilmsList, resetFilter } from './action';
+
+const originFilmList = mockFilms;
 
 
 const initialState = {
   genre: 'All genres',
-  filmList: mockFilms,
-  filteredOnGenreFilmsList: mockFilms
+  filmList: originFilmList,
+  filteredOnGenreFilmsList: originFilmList
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -16,9 +18,11 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(getFilteredOnGenreFilmsList, (state, action) => {
       if (action.payload === 'All genres') {
-        return {...state, filteredFilmList: mockFilms};
+        return {...state, filteredOnGenreFilmsList: originFilmList};
       }
-      state.filteredOnGenreFilmsList = state.filteredOnGenreFilmsList.filter((film) => film.Genre === action.payload);
+      state.filteredOnGenreFilmsList = state.filmList.filter((film) => film.Genre === action.payload);
+    }).addCase(resetFilter, (state) => {
+      state.filteredOnGenreFilmsList = initialState.filmList;
     });
 });
 

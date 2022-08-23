@@ -4,3 +4,5 @@ export const changeGenre = createAction('game/changeGenre', (value) => ({payload
 
 export const getFilteredOnGenreFilmsList = createAction('game/getFilteredOnGenreFilmsList', (value) => ({payload: value}));
 
+export const resetFilter = createAction('filter/resetFilter');
+

@@ -3,16 +3,28 @@ import { Link } from 'react-router-dom';
 import { VideoPlayerComponent } from '../video-player-component/video-player-component';
 import { useState } from 'react';
 
-function SmallMovieCardComponent({id, Name, SmallCardImage, Trailer}: Film, setActiveCard: CallableFunction): JSX.Element {
+type SmallMovieCardComponentProps = {
+  onSetActiveCard: CallableFunction,
+  film: Film
+}
+
+function SmallMovieCardComponent({onSetActiveCard, film}:SmallMovieCardComponentProps): JSX.Element {
   const [isActiveCard, setIsActiveCard] = useState(false);
 
+  const {
+    id,
+    SmallCardImage,
+    Trailer,
+    Name
+  } = film;
+
   const handleMouseEner = () => {
-    setActiveCard(id);
+    onSetActiveCard(id);
     setIsActiveCard(!isActiveCard);
   };
 
   const handleMouseLeave = () => {
-    setActiveCard('');
+    onSetActiveCard('');
     setIsActiveCard(!isActiveCard);
   };
 

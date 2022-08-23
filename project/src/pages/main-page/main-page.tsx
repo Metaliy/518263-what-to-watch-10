@@ -3,8 +3,9 @@ import {FilmsListComponent} from '../../components/films-list/films-list-compone
 import { Link } from 'react-router-dom';
 import {AppRoute} from '../../const';
 import { LogoComponent } from '../../components/logo-component/logo-component';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GenreListComponent } from '../../components/genre-list-component/genre-list-component';
+import { resetFilter } from '../../store/action';
 
 type MainPageProps = {
   mockFilms: Filmslist;
@@ -12,9 +13,10 @@ type MainPageProps = {
 
 
 function MainPageScreen({mockFilms}: MainPageProps): JSX.Element {
+  const {filteredOnGenreFilmsList, filmList} = useAppSelector((state) => state);
+  const genres = Array.from(['All genres', ...new Set(filmList.map((film) => film.Genre))]);
   const activeGenre = useAppSelector((state) => state.genre);
-  const {filteredOnGenreFilmsList} = useAppSelector((state) => state);
-  const genres = Array.from(['All genres', ...new Set(mockFilms.map((film) => film.Genre))]);
+  const dispatch = useAppDispatch();
   return (
     <>
       <section className="film-card">
@@ -76,7 +78,7 @@ function MainPageScreen({mockFilms}: MainPageProps): JSX.Element {
       </section>
 
 
-      <div className="page-content">
+      <div className="page-content" onLoad={() => dispatch(resetFilter())}>
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 

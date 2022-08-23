@@ -11,7 +11,11 @@ export function MoreLikeThisComponent ({films} : MoreLikeThisComponentProps) {
   return (
     <div className="catalog__films-list">
       {films.map((film) => (
-        SmallMovieCardComponent(film, setActiveCard)
+        <SmallMovieCardComponent
+          key={film.id}
+          onSetActiveCard={setActiveCard}
+          film={film}
+        />
       ))}
     </div>
   );
