@@ -5,9 +5,10 @@ import { changeGenre, getFilteredOnGenreFilmsList } from '../../store/action';
 type GenresListProps = {
   genres: string[];
   currentGenre: string;
+  resetRenderedFilmsCount: () => void;
 }
 
-export function GenreListComponent ({genres, currentGenre}: GenresListProps) {
+export function GenreListComponent ({genres, currentGenre, resetRenderedFilmsCount}: GenresListProps) {
 
   const dispatch = useAppDispatch();
   return (
@@ -19,6 +20,7 @@ export function GenreListComponent ({genres, currentGenre}: GenresListProps) {
               onClick={(evt) => {
                 dispatch(changeGenre((evt.target as HTMLInputElement).textContent));
                 dispatch(getFilteredOnGenreFilmsList((evt.target as HTMLInputElement).innerHTML));
+                resetRenderedFilmsCount();
               }}
               key={genre} className={currentGenre === genre ? 'catalog__genres-item catalog__genres-item--active' : 'catalog__genres-item'}
             >

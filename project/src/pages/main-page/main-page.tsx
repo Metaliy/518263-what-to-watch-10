@@ -1,11 +1,13 @@
 import { Filmslist } from '../../types/films';
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
 import { Link } from 'react-router-dom';
-import {AppRoute} from '../../const';
+import {AppRoute, FILMS_COUNT_PER_STEP} from '../../const';
 import { LogoComponent } from '../../components/logo-component/logo-component';
-import { useAppDispatch, useAppSelector } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { GenreListComponent } from '../../components/genre-list-component/genre-list-component';
-import { resetFilter } from '../../store/action';
+// import { resetFilter } from '../../store/action';
+import { ShowMoreComponent } from '../../components/show-more-component/show-more-component';
+import { useEffect, useState } from 'react';
 
 type MainPageProps = {
   mockFilms: Filmslist;
@@ -16,7 +18,30 @@ function MainPageScreen({mockFilms}: MainPageProps): JSX.Element {
   const {filteredOnGenreFilmsList, filmList} = useAppSelector((state) => state);
   const genres = Array.from(['All genres', ...new Set(filmList.map((film) => film.Genre))]);
   const activeGenre = useAppSelector((state) => state.genre);
-  const dispatch = useAppDispatch();
+
+  const [renderedFilmsCount, setRenderedFilmsCount] = useState(FILMS_COUNT_PER_STEP);
+  const [ShowMoreComponentVisibility, setShowMoreComponentVisibility] = useState(true);
+
+  const handleLoadMoreButtonClick = () => {
+    if (renderedFilmsCount >= filteredOnGenreFilmsList.length) {
+      setShowMoreComponentVisibility(false);
+    }
+    const newRenderedFilmsCount = Math.min(filteredOnGenreFilmsList.length, renderedFilmsCount + FILMS_COUNT_PER_STEP);
+    setRenderedFilmsCount(newRenderedFilmsCount);
+  };
+
+  const handleChangeGenreClick = () => {
+    setRenderedFilmsCount(FILMS_COUNT_PER_STEP);
+  };
+
+  useEffect(() => {
+    if (renderedFilmsCount >= FILMS_COUNT_PER_STEP && renderedFilmsCount < filteredOnGenreFilmsList.length) {
+      setShowMoreComponentVisibility(true);
+    } else {
+      setShowMoreComponentVisibility(false);
+    }
+  }, [renderedFilmsCount, filteredOnGenreFilmsList.length, ShowMoreComponentVisibility]);
+
   return (
     <>
       <section className="film-card">
@@ -78,18 +103,16 @@ function MainPageScreen({mockFilms}: MainPageProps): JSX.Element {
       </section>
 
 
-      <div className="page-content" onLoad={() => dispatch(resetFilter())}>
+      <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <GenreListComponent genres={genres} currentGenre={activeGenre} />
+          <GenreListComponent genres={genres} currentGenre={activeGenre} resetRenderedFilmsCount={handleChangeGenreClick} />
 
-          <FilmsListComponent films={filteredOnGenreFilmsList}/>
+          <FilmsListComponent films={filteredOnGenreFilmsList.slice(0, renderedFilmsCount )}/>
 
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
+          {ShowMoreComponentVisibility && <ShowMoreComponent addFilmsFunction={handleLoadMoreButtonClick} />}
         </section>
 
         <footer className="page-footer">
