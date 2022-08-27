@@ -1,10 +1,10 @@
 export type Film = {
   id: string,
-  Name: string,
-  Genre: string,
-  Trailer: string,
-  Year: number,
-  SmallCardImage: string
+  name: string,
+  genre: string,
+  trailer: string,
+  year: number,
+  smallCardImage: string
 };
 
 export type Filmslist = Film[];

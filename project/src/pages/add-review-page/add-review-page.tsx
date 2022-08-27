@@ -27,7 +27,7 @@ function AddReviewPageScreen({films}: AddReviewPageProps) {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <a href="film-page.html" className="breadcrumbs__link">{film?.Name}</a>
+                <a href="film-page.html" className="breadcrumbs__link">{film?.name}</a>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link">Add review</a>

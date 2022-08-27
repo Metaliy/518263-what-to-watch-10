@@ -23,3 +23,10 @@ export const timeOut = 1000;
 
 
 export const FILMS_COUNT_PER_STEP = 8;
+
+
+export enum APIRoute {
+  Films = '/films',
+  Login = '/login',
+  Logout = '/logout',
+}

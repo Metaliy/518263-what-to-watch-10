@@ -13,9 +13,9 @@ function SmallMovieCardComponent({onSetActiveCard, film}:SmallMovieCardComponent
 
   const {
     id,
-    SmallCardImage,
-    Trailer,
-    Name
+    smallCardImage,
+    trailer,
+    name
   } = film;
 
   const handleMouseEner = () => {
@@ -32,11 +32,11 @@ function SmallMovieCardComponent({onSetActiveCard, film}:SmallMovieCardComponent
     <article className="small-film-card catalog__films-card" key={id} onMouseEnter={handleMouseEner} onMouseLeave={handleMouseLeave} id={id}>
       <div className="small-film-card__image">
         {isActiveCard
-          ? <VideoPlayerComponent src={Trailer} poster={SmallCardImage} />
-          : <img src={SmallCardImage} alt={Name} width="280" height="175" />}
+          ? <VideoPlayerComponent src={trailer} poster={smallCardImage} />
+          : <img src={smallCardImage} alt={name} width="280" height="175" />}
       </div>
       <h3 className="small-film-card__title">
-        <Link to={`/films/${ id}`} className="small-film-card__link">{Name}</Link>
+        <Link to={`/films/${ id}`} className="small-film-card__link">{name}</Link>
       </h3>
     </article>
   );

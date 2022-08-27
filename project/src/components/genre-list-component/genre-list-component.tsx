@@ -9,7 +9,6 @@ type GenresListProps = {
 }
 
 export function GenreListComponent ({genres, currentGenre, resetRenderedFilmsCount}: GenresListProps) {
-
   const dispatch = useAppDispatch();
   return (
     <ul className="catalog__genres-list">

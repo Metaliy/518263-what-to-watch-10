@@ -11,7 +11,7 @@ function PlayerPageScreen({films}: PlayerPageProps) {
   const film = films.find((element) => element.id === id);
   return (
     <div className="player">
-      <video src={film?.Trailer} className="player__video" poster="img/player-poster.jpg"></video>
+      <video src={film?.trailer} className="player__video" poster="img/player-poster.jpg"></video>
 
       <button type="button" className="player__exit">Exit</button>
 

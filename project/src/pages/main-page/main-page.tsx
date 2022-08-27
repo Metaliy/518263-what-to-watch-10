@@ -5,20 +5,20 @@ import {AppRoute, FILMS_COUNT_PER_STEP} from '../../const';
 import { LogoComponent } from '../../components/logo-component/logo-component';
 import { useAppSelector } from '../../hooks';
 import { GenreListComponent } from '../../components/genre-list-component/genre-list-component';
-// import { resetFilter } from '../../store/action';
 import { ShowMoreComponent } from '../../components/show-more-component/show-more-component';
 import { useEffect, useState } from 'react';
 
 type MainPageProps = {
-  mockFilms: Filmslist;
+  films: Filmslist;
 }
 
 
-function MainPageScreen({mockFilms}: MainPageProps): JSX.Element {
+function MainPageScreen({films}: MainPageProps): JSX.Element {
   const {filteredOnGenreFilmsList, filmList} = useAppSelector((state) => state);
-  const genres = Array.from(['All genres', ...new Set(filmList.map((film) => film.Genre))]);
+  const genres = Array.from(['All genres', ...new Set(filmList.map((film) => film.genre))]);
   const activeGenre = useAppSelector((state) => state.genre);
-
+  // eslint-disable-next-line no-console
+  console.log(filmList);
   const [renderedFilmsCount, setRenderedFilmsCount] = useState(FILMS_COUNT_PER_STEP);
   const [ShowMoreComponentVisibility, setShowMoreComponentVisibility] = useState(true);
 
@@ -76,14 +76,14 @@ function MainPageScreen({mockFilms}: MainPageProps): JSX.Element {
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{mockFilms[0].Name}</h2>
+              <h2 className="film-card__title">{films[0].name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{mockFilms[0].Genre}</span>
-                <span className="film-card__year">{mockFilms[0].Year}</span>
+                <span className="film-card__genre">{films[0].genre}</span>
+                <span className="film-card__year">{films[0].year}</span>
               </p>
 
               <div className="film-card__buttons">
-                <Link className="btn btn--play film-card__button" to={`Player/${ mockFilms[0].id}`}>
+                <Link className="btn btn--play film-card__button" to={`Player/${ films[0].id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>

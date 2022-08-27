@@ -8,14 +8,29 @@ import MyListScreen from '../../pages/my-list-page/my-list-page';
 import PrivateRoute from '../private-route/private-route';
 import SignInPageScreen from '../../pages/sign-in-page/sign-in-page';
 import PlayerPageScreen from '../../pages/player-page/player-page';
-import { Filmslist } from '../../types/films';
+import { useAppSelector } from '../../hooks';
+import { store } from '../../store';
+import { fetchMovieAction } from '../../store/api-actions';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Spinner } from '../spinner/spinner';
 
 
-type AppProps = {
-  mockFilms: Filmslist
-}
+function App(): JSX.Element {
 
-function App({mockFilms}: AppProps): JSX.Element {
+  store.dispatch(fetchMovieAction());
+
+  const {filmList, isDataLoaded, authorizationStatus} = useAppSelector((state) => state);
+
+  const isCheckedAuth = (authStat: AuthorizationStatus): boolean =>
+    authStat === AuthorizationStatus.Unknown;
+
+
+  if (isDataLoaded || isCheckedAuth(authorizationStatus)) {
+    return (
+      <SignInPageScreen />
+    );
+  }
+
   return (
     <BrowserRouter>
       <Routes>
@@ -23,7 +38,7 @@ function App({mockFilms}: AppProps): JSX.Element {
           path={AppRoute.Root}
           element={
             < MainPageScreen
-              mockFilms={mockFilms}
+              films={filmList}
             />
           }
         />
@@ -31,7 +46,7 @@ function App({mockFilms}: AppProps): JSX.Element {
           path={AppRoute.AddReview}
           element={
             < AddReviewPageScreen
-              films={mockFilms}
+              films={filmList}
             />
           }
         />
@@ -39,7 +54,7 @@ function App({mockFilms}: AppProps): JSX.Element {
           path={AppRoute.Player}
           element={
             <PlayerPageScreen
-              films={mockFilms}
+              films={filmList}
             />
           }
         />
@@ -51,10 +66,10 @@ function App({mockFilms}: AppProps): JSX.Element {
           path={AppRoute.MyList}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.Auth}
+              authorizationStatus={authorizationStatus}
             >
               <MyListScreen
-                films={mockFilms}
+                films={filmList}
               />
             </PrivateRoute>
           }
@@ -63,7 +78,7 @@ function App({mockFilms}: AppProps): JSX.Element {
           path={AppRoute.Film}
           element={
             <MoviePageScreen
-              films={mockFilms}
+              films={filmList}
             />
           }
         />

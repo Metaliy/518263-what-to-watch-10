@@ -1,14 +1,23 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { mockFilms } from '../mocks/films';
-import { changeGenre, getFilteredOnGenreFilmsList, resetFilter } from './action';
+import { AuthorizationStatus } from '../const';
+import { Film } from '../types/films';
+import { changeGenre, getFilteredOnGenreFilmsList, loadMovies, requireAuthorization, resetFilter, setDataLoadedStatus } from './action';
 
-const originFilmList = mockFilms;
+type InitialState = {
+  genre: string,
+  filmList: Film[],
+  filteredOnGenreFilmsList: Film[],
+  authorizationStatus: AuthorizationStatus,
+  isDataLoaded: boolean,
+}
 
 
-const initialState = {
+const initialState: InitialState = {
   genre: 'All genres',
-  filmList: originFilmList,
-  filteredOnGenreFilmsList: originFilmList
+  filmList: [],
+  filteredOnGenreFilmsList: [],
+  authorizationStatus: AuthorizationStatus.Unknown,
+  isDataLoaded: false
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -18,11 +27,21 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(getFilteredOnGenreFilmsList, (state, action) => {
       if (action.payload === 'All genres') {
-        return {...state, filteredOnGenreFilmsList: originFilmList};
+        return {...state, filteredOnGenreFilmsList: state.filmList};
       }
-      state.filteredOnGenreFilmsList = state.filmList.filter((film) => film.Genre === action.payload);
-    }).addCase(resetFilter, (state) => {
+      state.filteredOnGenreFilmsList = state.filmList.filter((film) => film.genre === action.payload);
+    })
+    .addCase(resetFilter, (state) => {
       state.filteredOnGenreFilmsList = initialState.filmList;
+    })
+    .addCase(loadMovies, (state, action) => {
+      state.filmList = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authorizationStatus = action.payload;
+    })
+    .addCase(setDataLoadedStatus, (state, action) => {
+      state.isDataLoaded = action.payload;
     });
 });
 
