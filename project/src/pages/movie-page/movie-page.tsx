@@ -2,16 +2,13 @@ import { Link, useParams } from 'react-router-dom';
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
 import {LogoComponent} from '../../components/logo-component/logo-component';
 import { PageTabsComponent } from '../../components/page-tabs-components/page-tabs-component';
-import { Film } from '../../types/films';
-
-type MoviePageProps = {
-  films: Film[]
-}
+import { useAppSelector } from '../../hooks';
 
 
-function MoviePageScreen({films}: MoviePageProps) {
+function MoviePageScreen() {
+  const {filmList} = useAppSelector((state) => state);
   const { id } = useParams();
-  const film = films.find((element) => element.id === id);
+  const film = filmList.find((element) => element.id === id);
   return (
     <>
       <section className="film-card film-card--full">
@@ -80,7 +77,7 @@ function MoviePageScreen({films}: MoviePageProps) {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <FilmsListComponent films={films}/>
+          <FilmsListComponent films={filmList}/>
         </section>
 
         <footer className="page-footer">

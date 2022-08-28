@@ -1,15 +1,13 @@
-import { Film } from '../../types/films';
 import { useParams } from 'react-router-dom';
 import { LogoComponent } from '../../components/logo-component/logo-component';
 import {AddReviewComponent} from '../../components/add-review-component/add-review-component';
+import { useAppSelector } from '../../hooks';
 
-type AddReviewPageProps = {
-  films: Film[]
-}
 
-function AddReviewPageScreen({films}: AddReviewPageProps) {
+function AddReviewPageScreen() {
+  const {filmList} = useAppSelector((state) => state);
   const { id } = useParams();
-  const film = films.find((element) => element.id === id);
+  const film = filmList.find((element) => element.id === id);
   return (
     <section className="film-card film-card--full">
       <div className="film-card__header">

@@ -17,7 +17,7 @@ const initialState: InitialState = {
   filmList: [],
   filteredOnGenreFilmsList: [],
   authorizationStatus: AuthorizationStatus.Unknown,
-  isDataLoaded: false
+  isDataLoaded: true
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -41,6 +41,8 @@ const reducer = createReducer(initialState, (builder) => {
       state.authorizationStatus = action.payload;
     })
     .addCase(setDataLoadedStatus, (state, action) => {
+      // eslint-disable-next-line no-console
+      console.log(action.payload);
       state.isDataLoaded = action.payload;
     });
 });

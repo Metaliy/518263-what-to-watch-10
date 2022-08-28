@@ -1,4 +1,3 @@
-import { Filmslist } from '../../types/films';
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
 import { Link } from 'react-router-dom';
 import {AppRoute, FILMS_COUNT_PER_STEP} from '../../const';
@@ -8,12 +7,8 @@ import { GenreListComponent } from '../../components/genre-list-component/genre-
 import { ShowMoreComponent } from '../../components/show-more-component/show-more-component';
 import { useEffect, useState } from 'react';
 
-type MainPageProps = {
-  films: Filmslist;
-}
 
-
-function MainPageScreen({films}: MainPageProps): JSX.Element {
+function MainPageScreen(): JSX.Element {
   const {filteredOnGenreFilmsList, filmList} = useAppSelector((state) => state);
   const genres = Array.from(['All genres', ...new Set(filmList.map((film) => film.genre))]);
   const activeGenre = useAppSelector((state) => state.genre);
@@ -40,6 +35,7 @@ function MainPageScreen({films}: MainPageProps): JSX.Element {
     } else {
       setShowMoreComponentVisibility(false);
     }
+
   }, [renderedFilmsCount, filteredOnGenreFilmsList.length, ShowMoreComponentVisibility]);
 
   return (
@@ -76,14 +72,15 @@ function MainPageScreen({films}: MainPageProps): JSX.Element {
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{films[0].name}</h2>
+              <h2 className="film-card__title">{filmList[0].name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{films[0].genre}</span>
-                <span className="film-card__year">{films[0].year}</span>
+                <span className="film-card__genre">{filmList[0].genre}</span>
+                <span className="film-card__year">{filmList[0].year}</span>
               </p>
 
+
               <div className="film-card__buttons">
-                <Link className="btn btn--play film-card__button" to={`Player/${ films[0].id}`}>
+                <Link className="btn btn--play film-card__button" to={`Player/${ filmList[0].id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
@@ -109,7 +106,7 @@ function MainPageScreen({films}: MainPageProps): JSX.Element {
 
           <GenreListComponent genres={genres} currentGenre={activeGenre} resetRenderedFilmsCount={handleChangeGenreClick} />
 
-          <FilmsListComponent films={filteredOnGenreFilmsList.slice(0, renderedFilmsCount )}/>
+          <FilmsListComponent films={filmList.slice(0, renderedFilmsCount )}/>
 
 
           {ShowMoreComponentVisibility && <ShowMoreComponent addFilmsFunction={handleLoadMoreButtonClick} />}

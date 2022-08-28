@@ -9,17 +9,13 @@ import PrivateRoute from '../private-route/private-route';
 import SignInPageScreen from '../../pages/sign-in-page/sign-in-page';
 import PlayerPageScreen from '../../pages/player-page/player-page';
 import { useAppSelector } from '../../hooks';
-import { store } from '../../store';
-import { fetchMovieAction } from '../../store/api-actions';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Spinner } from '../spinner/spinner';
+import Spinner from '../spinner/spinner';
 
 
 function App(): JSX.Element {
 
-  store.dispatch(fetchMovieAction());
+  const {isDataLoaded, authorizationStatus} = useAppSelector((state) => state);
 
-  const {filmList, isDataLoaded, authorizationStatus} = useAppSelector((state) => state);
 
   const isCheckedAuth = (authStat: AuthorizationStatus): boolean =>
     authStat === AuthorizationStatus.Unknown;
@@ -27,7 +23,7 @@ function App(): JSX.Element {
 
   if (isDataLoaded || isCheckedAuth(authorizationStatus)) {
     return (
-      <SignInPageScreen />
+      <Spinner />
     );
   }
 
@@ -37,25 +33,19 @@ function App(): JSX.Element {
         <Route
           path={AppRoute.Root}
           element={
-            < MainPageScreen
-              films={filmList}
-            />
+            < MainPageScreen />
           }
         />
         <Route
           path={AppRoute.AddReview}
           element={
-            < AddReviewPageScreen
-              films={filmList}
-            />
+            < AddReviewPageScreen />
           }
         />
         <Route
           path={AppRoute.Player}
           element={
-            <PlayerPageScreen
-              films={filmList}
-            />
+            <PlayerPageScreen />
           }
         />
         <Route
@@ -68,18 +58,14 @@ function App(): JSX.Element {
             <PrivateRoute
               authorizationStatus={authorizationStatus}
             >
-              <MyListScreen
-                films={filmList}
-              />
+              <MyListScreen />
             </PrivateRoute>
           }
         />
         <Route
           path={AppRoute.Film}
           element={
-            <MoviePageScreen
-              films={filmList}
-            />
+            <MoviePageScreen />
           }
         />
         <Route

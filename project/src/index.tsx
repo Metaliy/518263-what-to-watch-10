@@ -5,8 +5,9 @@ import App from './components/app/app';
 import { store } from './store';
 import { checkAuthAction, fetchMovieAction } from './store/api-actions';
 
-store.dispatch(fetchMovieAction());
 store.dispatch(checkAuthAction());
+store.dispatch(fetchMovieAction());
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

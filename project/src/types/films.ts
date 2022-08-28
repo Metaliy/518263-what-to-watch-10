@@ -2,9 +2,9 @@ export type Film = {
   id: string,
   name: string,
   genre: string,
-  trailer: string,
+  previewVideoLink: string,
   year: number,
-  smallCardImage: string
+  previewImage: string
 };
 
 export type Filmslist = Film[];

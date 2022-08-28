@@ -1,12 +1,10 @@
 import { LogoComponent } from '../../components/logo-component/logo-component';
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
-import { Film } from '../../types/films';
+import { useAppSelector } from '../../hooks';
 
-type MyListPageProps = {
-  films: Film[]
-}
 
-function MyListScreen({films}: MyListPageProps) {
+function MyListScreen() {
+  const {filmList} = useAppSelector((state) => state);
   return (
     <div className="user-page">
       <header className="page-header user-page__head">
@@ -31,7 +29,7 @@ function MyListScreen({films}: MyListPageProps) {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-          <FilmsListComponent films={films} />
+          <FilmsListComponent films={filmList} />
         </div>
       </section>
 

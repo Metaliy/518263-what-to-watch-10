@@ -1,6 +1,9 @@
+import './spinner.css';
 
-export function Spinner () {
+function Spinner ():JSX.Element {
   return (
     <div className="spinner"></div>
   );
 }
+
+export default Spinner;
