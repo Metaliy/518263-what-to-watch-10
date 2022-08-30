@@ -1,12 +1,41 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { MAX_REVIEW_LENGTH, MIN_REVIEW_LENGTH } from '../../const';
+import { useAppDispatch } from '../../hooks';
+import { postCommentAction } from '../../store/api-actions';
+import { PostCommentData } from '../../types/post-comment-data';
 
 export function AddReviewComponent () {
 
-  const [, setStateText] = useState('');
+  const {id} = useParams();
+
+  const dispatch = useAppDispatch();
+
+  const [stateText, setStateText] = useState('');
+
+  const [stateRating, setStateRating] = useState('');
+
+  const onSubmit = (comment: PostCommentData) => {
+    dispatch(postCommentAction(comment));
+  };
+
+  const handleOptionChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const {value} = evt.target;
+    setStateRating(value);
+  };
+
+  if(stateRating !== '' && stateText.length >= MIN_REVIEW_LENGTH && stateText.length <= MAX_REVIEW_LENGTH) {
+    onSubmit({
+      rating: stateRating,
+      comment: stateText,
+      filmId: id
+    });
+  }
+
   return (
     <form action="#" className="add-review__form">
       <div className="rating">
-        <div className="rating__stars">
+        <div className="rating__stars" onChange={handleOptionChange}>
           <input className="rating__input" id="star-10" type="radio" name="rating" value="10" />
           <label className="rating__label" htmlFor="star-10">Rating 10</label>
 
@@ -49,3 +78,4 @@ export function AddReviewComponent () {
     </form>
   );
 }
+

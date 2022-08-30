@@ -33,3 +33,16 @@ export enum APIRoute {
   Film = '/films/',
   Comments = '/comments/'
 }
+
+
+export enum Rating {
+  Bad = 'Bad',
+  Normal = 'Normal',
+  Good = 'Good',
+  VeryGood = 'Very good',
+  Awesome = 'Awesome',
+}
+
+
+export const MIN_REVIEW_LENGTH = 50;
+export const MAX_REVIEW_LENGTH = 400;

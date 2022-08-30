@@ -1,14 +1,11 @@
 import { useAppSelector } from '../../hooks';
+import { Review } from '../../types/comments';
 import { ReviewComponent } from '../review-component/review-component';
 
 export function ReviewsTabComponent () {
-  const comments = useAppSelector((state) => state.comments);
-  // eslint-disable-next-line no-console
-  console.log(comments);
-  // eslint-disable-next-line no-console
-  console.log(Array.from(comments)[0]);
-  const firstHalfReviews: Comment[] = [];
-  const twiceHalfReviews: Comment[] = [];
+  const {comments} = useAppSelector((state) => state);
+  const firstHalfReviews: Review[] = [];
+  const twiceHalfReviews: Review[] = [];
   let counter = 1;
   for (let i = 0; i < comments.length; i++) {
     if (counter % 2 === 0) {

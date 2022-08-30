@@ -1,7 +1,8 @@
-import { Comment } from '../../types/comments';
+import dayjs from 'dayjs';
+import { Review } from '../../types/comments';
 
 type ReviewComponentProps = {
-  comment: Comment
+  comment: Review
 }
 
 export function ReviewComponent ({comment} :ReviewComponentProps) {
@@ -13,11 +14,11 @@ export function ReviewComponent ({comment} :ReviewComponentProps) {
 
         <footer className="review__details">
           <cite className="review__author">{comment.user.name}</cite>
-          <time className="review__date" dateTime={comment.date}>December 24, 2016</time>
+          <time className="review__date" dateTime={comment.date}>{dayjs(comment.date).format('MMMM D, YYYY')}</time>
         </footer>
       </blockquote>
 
-      <div className="review__rating">8,9</div>
+      <div className="review__rating">{comment.rating}</div>
     </div>
   );
 }

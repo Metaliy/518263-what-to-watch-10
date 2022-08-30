@@ -3,24 +3,29 @@ import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
 import {LogoComponent} from '../../components/logo-component/logo-component';
+import NotFoundComponent from '../../components/not-found-component/not-found-component';
 import { PageTabsComponent } from '../../components/page-tabs-components/page-tabs-component';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchCommentsAction } from '../../store/api-actions';
-import { getFilteredFilmList } from '../../utils/film-filter';
-
+import { fetchCommentsAction, fetchFilmAction, fetchSimilarFilmsAction } from '../../store/api-actions';
 
 export function MoviePageScreen() {
-  const {filmList} = useAppSelector((state) => state);
+  const { film, similarFilmsList} = useAppSelector((state) => state);
   const { id } = useParams();
-  const film = filmList.find((element) => Number(element.id) === Number(id));
-  const filmGenre = film?.genre;
-  const filteredFilmList = getFilteredFilmList(filmList, filmGenre);
+
   const dispatch = useAppDispatch();
 
 
   useEffect(() => {
     dispatch(fetchCommentsAction(Number(id)));
-  }, []);
+    dispatch(fetchFilmAction(Number(id)));
+    dispatch(fetchSimilarFilmsAction(Number(id)));
+  }, [id]);
+
+  if(!film) {
+    return (
+      <NotFoundComponent />
+    );
+  }
 
   return (
     <>
@@ -90,7 +95,7 @@ export function MoviePageScreen() {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <FilmsListComponent films={filteredFilmList.slice(0, 4)}/>
+          <FilmsListComponent films={similarFilmsList}/>
         </section>
 
         <footer className="page-footer">
@@ -110,3 +115,4 @@ export function MoviePageScreen() {
     </>
   );
 }
+
