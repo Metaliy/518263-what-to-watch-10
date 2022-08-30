@@ -1,20 +1,33 @@
+// import { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
 import {LogoComponent} from '../../components/logo-component/logo-component';
 import { PageTabsComponent } from '../../components/page-tabs-components/page-tabs-component';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchCommentsAction } from '../../store/api-actions';
+import { getFilteredFilmList } from '../../utils/film-filter';
 
 
-function MoviePageScreen() {
+export function MoviePageScreen() {
   const {filmList} = useAppSelector((state) => state);
   const { id } = useParams();
-  const film = filmList.find((element) => element.id === id);
+  const film = filmList.find((element) => Number(element.id) === Number(id));
+  const filmGenre = film?.genre;
+  const filteredFilmList = getFilteredFilmList(filmList, filmGenre);
+  const dispatch = useAppDispatch();
+
+
+  useEffect(() => {
+    dispatch(fetchCommentsAction(Number(id)));
+  }, []);
+
   return (
     <>
-      <section className="film-card film-card--full">
+      <section className="film-card film-card--full" style={{backgroundColor: film?.backgroundColor}}>
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+            <img src={film?.backgroundImage} alt={film?.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
@@ -41,16 +54,16 @@ function MoviePageScreen() {
               <h2 className="film-card__title">{film?.name}</h2>
               <p className="film-card__meta">
                 <span className="film-card__genre">{film?.genre}</span>
-                <span className="film-card__year">{film?.year}</span>
+                <span className="film-card__year">{film?.released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <Link to={`/player/${film?.id}`} className="btn btn--play film-card__button" type="button">
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
                   <span>Play</span>
-                </button>
+                </Link>
                 <button className="btn btn--list film-card__button" type="button">
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
@@ -67,7 +80,7 @@ function MoviePageScreen() {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+              <img src={film?.posterImage} alt={`${film?.name} poster`} width="218" height="327" />
             </div>
             <PageTabsComponent />
           </div>
@@ -77,7 +90,7 @@ function MoviePageScreen() {
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          <FilmsListComponent films={filmList}/>
+          <FilmsListComponent films={filteredFilmList.slice(0, 4)}/>
         </section>
 
         <footer className="page-footer">
@@ -97,5 +110,3 @@ function MoviePageScreen() {
     </>
   );
 }
-
-export default MoviePageScreen;

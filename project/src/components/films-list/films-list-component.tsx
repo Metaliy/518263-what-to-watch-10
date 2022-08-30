@@ -8,6 +8,7 @@ type AddReviewPageProps = {
 
 export function FilmsListComponent({films}: AddReviewPageProps): JSX.Element {
   const [, setActiveCard] = useState('');
+
   return (
     <div className="catalog__films-list">
       {films.map((film) => (

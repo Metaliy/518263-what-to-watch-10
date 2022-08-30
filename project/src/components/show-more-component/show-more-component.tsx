@@ -1,12 +1,13 @@
 
+
 type ShowMoreComponentProps = {
-  addFilmsFunction: () => void
+  onAddFilms: () => void
 }
 
-export function ShowMoreComponent ({addFilmsFunction}: ShowMoreComponentProps) {
+export function ShowMoreComponent ({onAddFilms}: ShowMoreComponentProps) {
   return (
     <div className="catalog__more">
-      <button className="catalog__button" type="button" onClick={addFilmsFunction}>Show more</button>
+      <button className="catalog__button" type="button" onClick={onAddFilms}>Show more</button>
     </div>
   );
 }

@@ -1,11 +1,15 @@
-import { Reviewlist } from '../../types/reviews';
+import { Comment } from '../../types/comments';
 import { ReviewComponent } from '../review-component/review-component';
 
-export function ReviewListComponent (reviews: Reviewlist) {
+type ReviewListComponentProps = {
+  comments: Comment[]
+}
+
+export function ReviewListComponent ({comments}: ReviewListComponentProps) {
   return (
     <div className="catalog__films-list">
-      {reviews.map((review) => (
-        ReviewComponent(review)
+      {comments.map((comment) => (
+        <ReviewComponent comment={comment} key={comment.id}/>
       ))}
     </div>
   );

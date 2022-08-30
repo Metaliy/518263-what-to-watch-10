@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { tabNames } from '../../const';
 import { DetailsTabComponent } from './details-tab-component';
 import { OverviewTabComponent } from './overview-tab-component';
 import { ReviewsTabComponent } from './reviews-tab-component';
-import { mockComments } from '../../mocks/reviews';
+import { tabNames } from '../../const';
 
 
 export function PageTabsComponent () {
@@ -17,7 +16,7 @@ export function PageTabsComponent () {
       case tabNames.Details:
         return <DetailsTabComponent />;
       case tabNames.Reviews:
-        return <ReviewsTabComponent reviews={mockComments} />;
+        return <ReviewsTabComponent />;
     }
   };
 
@@ -40,3 +39,5 @@ export function PageTabsComponent () {
     </div>
   );
 }
+
+

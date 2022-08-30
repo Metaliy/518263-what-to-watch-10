@@ -1,27 +1,29 @@
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
 import { Link } from 'react-router-dom';
-import {AppRoute, FILMS_COUNT_PER_STEP} from '../../const';
-import { LogoComponent } from '../../components/logo-component/logo-component';
+import { FILMS_COUNT_PER_STEP} from '../../const';
+
 import { useAppSelector } from '../../hooks';
 import { GenreListComponent } from '../../components/genre-list-component/genre-list-component';
 import { ShowMoreComponent } from '../../components/show-more-component/show-more-component';
 import { useEffect, useState } from 'react';
+import { getFilteredFilmList } from '../../utils/film-filter';
+import { HeaderComponent } from '../../components/header-component';
 
 
 function MainPageScreen(): JSX.Element {
-  const {filteredOnGenreFilmsList, filmList} = useAppSelector((state) => state);
-  const genres = Array.from(['All genres', ...new Set(filmList.map((film) => film.genre))]);
+  const { filmList, promoFilm} = useAppSelector((state) => state);
   const activeGenre = useAppSelector((state) => state.genre);
-  // eslint-disable-next-line no-console
-  console.log(filmList);
+  const genres = Array.from(['All genres', ...new Set(filmList.map((film) => film.genre))]);
   const [renderedFilmsCount, setRenderedFilmsCount] = useState(FILMS_COUNT_PER_STEP);
   const [ShowMoreComponentVisibility, setShowMoreComponentVisibility] = useState(true);
+  const [filteredFilmList, setFilteredFilmList] = useState(getFilteredFilmList(filmList, activeGenre));
+
 
   const handleLoadMoreButtonClick = () => {
-    if (renderedFilmsCount >= filteredOnGenreFilmsList.length) {
+    if (renderedFilmsCount >= filmList.length) {
       setShowMoreComponentVisibility(false);
     }
-    const newRenderedFilmsCount = Math.min(filteredOnGenreFilmsList.length, renderedFilmsCount + FILMS_COUNT_PER_STEP);
+    const newRenderedFilmsCount = Math.min(filmList.length, renderedFilmsCount + FILMS_COUNT_PER_STEP);
     setRenderedFilmsCount(newRenderedFilmsCount);
   };
 
@@ -30,57 +32,42 @@ function MainPageScreen(): JSX.Element {
   };
 
   useEffect(() => {
-    if (renderedFilmsCount >= FILMS_COUNT_PER_STEP && renderedFilmsCount < filteredOnGenreFilmsList.length) {
+    setFilteredFilmList(getFilteredFilmList(filmList, activeGenre));
+    if (renderedFilmsCount >= FILMS_COUNT_PER_STEP && renderedFilmsCount < filteredFilmList.length) {
       setShowMoreComponentVisibility(true);
     } else {
       setShowMoreComponentVisibility(false);
     }
 
-  }, [renderedFilmsCount, filteredOnGenreFilmsList.length, ShowMoreComponentVisibility]);
+  }, [renderedFilmsCount, filteredFilmList.length, ShowMoreComponentVisibility, activeGenre, filmList]);
 
   return (
     <>
       <section className="film-card">
         <div className="film-card__bg">
-          <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
+          <img src={filmList[0].backgroundImage} alt={promoFilm?.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
 
-        <header className="page-header film-card__head">
-          <div className="logo">
-            <LogoComponent />
-          </div>
-
-          <ul className="user-block">
-            <li className="user-block__item">
-              <div className="user-block__avatar">
-                <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-              </div>
-            </li>
-            <li className="user-block__item">
-
-              <Link to={AppRoute.SignIn} className="user-block__link">Sign in</Link>
-            </li>
-          </ul>
-        </header>
+        <HeaderComponent />
 
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
-              <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218" height="327" />
+              <img src={promoFilm?.posterImage} alt={promoFilm?.name} width="218" height="327" />
             </div>
 
             <div className="film-card__desc">
-              <h2 className="film-card__title">{filmList[0].name}</h2>
+              <h2 className="film-card__title">{promoFilm?.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{filmList[0].genre}</span>
-                <span className="film-card__year">{filmList[0].year}</span>
+                <span className="film-card__genre">{promoFilm?.genre}</span>
+                <span className="film-card__year">{promoFilm?.released}</span>
               </p>
 
 
               <div className="film-card__buttons">
-                <Link className="btn btn--play film-card__button" to={`Player/${ filmList[0].id}`}>
+                <Link className="btn btn--play film-card__button" to={`Player/${ promoFilm?.id}`}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
@@ -106,10 +93,10 @@ function MainPageScreen(): JSX.Element {
 
           <GenreListComponent genres={genres} currentGenre={activeGenre} resetRenderedFilmsCount={handleChangeGenreClick} />
 
-          <FilmsListComponent films={filmList.slice(0, renderedFilmsCount )}/>
+          <FilmsListComponent films={filteredFilmList.slice(0, renderedFilmsCount)} />
 
 
-          {ShowMoreComponentVisibility && <ShowMoreComponent addFilmsFunction={handleLoadMoreButtonClick} />}
+          {ShowMoreComponentVisibility && <ShowMoreComponent onAddFilms={handleLoadMoreButtonClick} />}
         </section>
 
         <footer className="page-footer">

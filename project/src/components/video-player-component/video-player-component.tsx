@@ -19,6 +19,6 @@ export function VideoPlayerComponent ({src, poster}:VideoPlayerComponentProps) {
   });
 
   return (
-    <video src={src} className="player__video" poster={poster} ref={videoRef} width='280' height='175' muted></video>
+    <video src={src} className="player__video" poster={poster} ref={videoRef} width='265' height='170' muted></video>
   );
 }
