@@ -13,8 +13,6 @@ function AddReviewPageScreen() {
     return null;
   }
   const film = filmList.find((element) => Number(element.id ) === Number(id));
-  // eslint-disable-next-line no-console
-  console.log(filmList.find((element) => element.id === id));
 
   if (!film) {
     return <NotFoundComponent />;

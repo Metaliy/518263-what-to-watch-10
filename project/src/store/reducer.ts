@@ -14,7 +14,7 @@ type InitialState = {
   comments: Review[],
   similarFilmsList: Film[],
   film: Film | undefined ,
-  avatarUrl: string | null
+  avatarUrl: string | undefined
 }
 
 

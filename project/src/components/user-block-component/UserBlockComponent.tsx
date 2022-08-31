@@ -14,7 +14,7 @@ export function UserBlockComponent(): JSX.Element {
         <li className="user-block__item">
           <div className="user-block__avatar">
             <Link to={AppRoute.MyList}>
-              <img src={avatarUrl as string} alt="User avatar" width="63" height="63" />
+              <img src={avatarUrl} alt="User avatar" width="63" height="63" />
             </Link>
           </div>
         </li>
