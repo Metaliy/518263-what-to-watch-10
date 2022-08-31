@@ -4,16 +4,14 @@ import { DetailsTabComponent } from './details-tab-component';
 import { OverviewTabComponent } from './overview-tab-component';
 import { ReviewsTabComponent } from './reviews-tab-component';
 import { tabNames } from '../../const';
-import { useAppSelector } from '../../hooks';
 
 
 export function PageTabsComponent () {
   const [activeTab, setActiveTab] = useState(tabNames.Overview);
-  const {film} = useAppSelector((state) => state);
   const renderTab = (tab: string) => {
     switch (tab) {
       case tabNames.Overview:
-        return < OverviewTabComponent film={film} />;
+        return < OverviewTabComponent />;
       case tabNames.Details:
         return <DetailsTabComponent />;
       case tabNames.Reviews:

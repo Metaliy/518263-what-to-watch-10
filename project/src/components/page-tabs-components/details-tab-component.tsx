@@ -1,9 +1,22 @@
 import { useAppSelector } from '../../hooks';
+import NotFoundComponent from '../not-found-component/not-found-component';
 
 
 export function DetailsTabComponent () {
 
   const {film} = useAppSelector((state) => state);
+
+  if (!film) {
+    return (
+      <NotFoundComponent />
+    );
+  }
+
+  function getTimeFromMins(mins: number) {
+    const hours = Math.trunc(mins / 60);
+    const minutes = mins % 60;
+    return `${hours }h ${ minutes}m`;
+  }
 
   return (
     <div className="film-card__text film-card__row">
@@ -27,7 +40,7 @@ export function DetailsTabComponent () {
       <div className="film-card__text-col">
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Run Time</strong>
-          <span className="film-card__details-value">{film?.runTime}</span>
+          <span className="film-card__details-value">{getTimeFromMins(film.runTime)}</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Genre</strong>

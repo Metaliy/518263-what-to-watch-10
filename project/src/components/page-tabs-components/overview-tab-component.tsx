@@ -1,12 +1,17 @@
 import { Fragment } from 'react';
 import { Rating } from '../../const';
-import { Film } from '../../types/films';
+import { useAppSelector } from '../../hooks';
+import NotFoundComponent from '../not-found-component/not-found-component';
 
-type TabOverviewProps = {
-  film: Film;
-}
+export function OverviewTabComponent () {
 
-export function OverviewTabComponent ({film}: TabOverviewProps) {
+  const {film} = useAppSelector((state) => state);
+
+  if (!film) {
+    return (
+      <NotFoundComponent />
+    );
+  }
 
   const getGrade = (rating: number): string => {
     if (rating >= 0 && rating <= 3) {
@@ -36,7 +41,7 @@ export function OverviewTabComponent ({film}: TabOverviewProps) {
       <div className="film-rating">
         <div className="film-rating__score">{film.rating}</div>
         <p className="film-rating__meta">
-          <span className="film-rating__level">{getGrade(film?.rating)}</span>
+          <span className="film-rating__level">{getGrade(film.rating)}</span>
           <span className="film-rating__count">{film.scoresCount}</span>
         </p>
       </div>

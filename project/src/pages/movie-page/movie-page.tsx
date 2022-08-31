@@ -2,14 +2,15 @@
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
-import {LogoComponent} from '../../components/logo-component/logo-component';
+import { HeaderComponent } from '../../components/header-component';
 import NotFoundComponent from '../../components/not-found-component/not-found-component';
 import { PageTabsComponent } from '../../components/page-tabs-components/page-tabs-component';
+import { AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCommentsAction, fetchFilmAction, fetchSimilarFilmsAction } from '../../store/api-actions';
 
 export function MoviePageScreen() {
-  const { film, similarFilmsList} = useAppSelector((state) => state);
+  const { film, similarFilmsList, authorizationStatus} = useAppSelector((state) => state);
   const { id } = useParams();
 
   const dispatch = useAppDispatch();
@@ -37,22 +38,7 @@ export function MoviePageScreen() {
 
           <h1 className="visually-hidden">WTW</h1>
 
-          <header className="page-header film-card__head">
-            <div className="logo">
-              <LogoComponent />
-            </div>
-
-            <ul className="user-block">
-              <li className="user-block__item">
-                <div className="user-block__avatar">
-                  <img src="img/avatar.jpg" alt="User avatar" width="63" height="63" />
-                </div>
-              </li>
-              <li className="user-block__item">
-                <a className="user-block__link">Sign out</a>
-              </li>
-            </ul>
-          </header>
+          <HeaderComponent />
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
@@ -75,8 +61,8 @@ export function MoviePageScreen() {
                   </svg>
                   <span>My list</span>
                   <span className="film-card__count">9</span>
-                </button>
-                <Link to ={`/films/${ id }/review`} className="btn film-card__button">Add review</Link>
+                </button> {authorizationStatus === AuthorizationStatus.Auth && <Link to ={`/films/${ id }/review`} className="btn film-card__button">Add review</Link>}
+
               </div>
             </div>
           </div>

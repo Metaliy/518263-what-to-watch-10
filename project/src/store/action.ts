@@ -24,3 +24,5 @@ export const loadFilm = createAction('data/loadFilm', (value) => ({payload: valu
 export const loadSimilarFilms = createAction('data/loadSimilarFilms', (value) => ({payload: value}));
 
 export const postComment = createAction('data/postComment', (value) => ({payload: value}));
+
+export const getAvatarUrl = createAction('data/getAvatarUrl', (value) => ({payload: value}));

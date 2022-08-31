@@ -1,7 +1,7 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state.js';
-import {loadComments, loadFilm, loadMovies, loadPromoFilm, loadSimilarFilms, postComment, requireAuthorization, setDataLoadedStatus} from './action';
+import { loadComments, loadFilm, loadMovies, loadPromoFilm, loadSimilarFilms, postComment, requireAuthorization, setDataLoadedStatus} from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AuthorizationStatus} from '../const';
 import {AuthData} from '../types/auth-data';
@@ -55,8 +55,6 @@ export const fetchFilmAction = createAsyncThunk<void, number, {
   'data/fetchFilm',
   async (id: number, {dispatch, extra: api}) => {
     const {data} = await api.get<Film>(`${APIRoute.Film}${id}`);
-    // eslint-disable-next-line no-console
-    console.log(data);
     dispatch(loadFilm(data));
   },
 );
@@ -69,8 +67,6 @@ export const fetchSimilarFilmsAction = createAsyncThunk<void, number, {
   'data/fetchFilm',
   async (id: number, {dispatch, extra: api}) => {
     const {data} = await api.get<Film[]>(`${APIRoute.Film}${id}/similar`);
-    // eslint-disable-next-line no-console
-    console.log(data);
     dispatch(loadSimilarFilms(data));
   },
 );
@@ -110,8 +106,6 @@ export const loginAction = createAsyncThunk<void, AuthData, {
 }>(
   'user/login',
   async ({login: email, password}, {dispatch, extra: api}) => {
-    // eslint-disable-next-line no-console
-    console.log(email);
     const {data: {token}} = await api.post<UserData>(APIRoute.Login, {email, password});
     saveToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));

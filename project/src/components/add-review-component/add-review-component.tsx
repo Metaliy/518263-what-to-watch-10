@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MAX_REVIEW_LENGTH, MIN_REVIEW_LENGTH } from '../../const';
 import { useAppDispatch } from '../../hooks';
@@ -15,27 +15,42 @@ export function AddReviewComponent () {
 
   const [stateRating, setStateRating] = useState('');
 
+  const [postButtonVisible, setPostButtonVisible] = useState(false);
+
   const onSubmit = (comment: PostCommentData) => {
     dispatch(postCommentAction(comment));
   };
 
-  const handleOptionChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const isCorrectReview = (stateRating !== '' && stateText.length >= MIN_REVIEW_LENGTH && stateText.length <= MAX_REVIEW_LENGTH);
+
+
+  if (!id) {
+    return null;
+  }
+
+  const handleRatingChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const {value} = evt.target;
     setStateRating(value);
   };
 
-  if(stateRating !== '' && stateText.length >= MIN_REVIEW_LENGTH && stateText.length <= MAX_REVIEW_LENGTH) {
-    onSubmit({
-      rating: stateRating,
-      comment: stateText,
-      filmId: id
-    });
-  }
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+    evt.preventDefault();
+
+    if(isCorrectReview) {
+      onSubmit({
+        rating: stateRating,
+        comment: stateText,
+        filmId: id
+      });
+      setPostButtonVisible(true);
+    }
+  };
+
 
   return (
-    <form action="#" className="add-review__form">
+    <form action="#" className="add-review__form" onSubmit={handleSubmit}>
       <div className="rating">
-        <div className="rating__stars" onChange={handleOptionChange}>
+        <div className="rating__stars" onChange={handleRatingChange}>
           <input className="rating__input" id="star-10" type="radio" name="rating" value="10" />
           <label className="rating__label" htmlFor="star-10">Rating 10</label>
 
@@ -69,9 +84,9 @@ export function AddReviewComponent () {
       </div>
 
       <div className="add-review__text">
-        <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" onChange={(evt) => {setStateText(evt.target.value);}}></textarea>
+        <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" onChange={(evt) => {setStateText(evt.target.value);}} minLength={MIN_REVIEW_LENGTH} maxLength={MAX_REVIEW_LENGTH}></textarea>
         <div className="add-review__submit">
-          <button className="add-review__btn" type="submit">Post</button>
+          <button className="add-review__btn" type="submit" disabled={postButtonVisible}>Post</button>
         </div>
 
       </div>

@@ -38,7 +38,7 @@ function SmallMovieCardComponent({onSetActiveCard, film}:SmallMovieCardComponent
             : <img src={previewImage} alt={name} width="280" height="175" />}
         </div>
         <h3 className="small-film-card__title">
-          <Link to={`/films/${ id}`} className="small-film-card__link">{name}</Link>
+          <p className="small-film-card__link">{name}</p>
         </h3>
       </Link>
     </article>
