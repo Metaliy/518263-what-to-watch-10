@@ -1,17 +1,21 @@
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
 import { Link } from 'react-router-dom';
-import { FILMS_COUNT_PER_STEP} from '../../const';
+import { AppRoute, AuthorizationStatus, FILMS_COUNT_PER_STEP} from '../../const';
 
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { GenreListComponent } from '../../components/genre-list-component/genre-list-component';
 import { ShowMoreComponent } from '../../components/show-more-component/show-more-component';
 import { useEffect, useState } from 'react';
 import { getFilteredFilmList } from '../../utils/film-filter';
 import { HeaderComponent } from '../../components/header-component';
+import { redirectToRoute } from '../../store/action';
+import { changeFilmStatusAction } from '../../store/api-actions';
+import NotFoundComponent from '../../components/not-found-component/not-found-component';
 
 
 function MainPageScreen(): JSX.Element {
-  const { filmList, promoFilm} = useAppSelector((state) => state);
+  const { filmList, promoFilm, authorizationStatus, favoriteFilmsList} = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
   const activeGenre = useAppSelector((state) => state.genre);
   const genres = Array.from(['All genres', ...new Set(filmList.map((film) => film.genre))]);
   const [renderedFilmsCount, setRenderedFilmsCount] = useState(FILMS_COUNT_PER_STEP);
@@ -40,6 +44,12 @@ function MainPageScreen(): JSX.Element {
     }
 
   }, [renderedFilmsCount, filteredFilmList.length, ShowMoreComponentVisibility, activeGenre, filmList]);
+
+  if (!promoFilm) {
+    return (
+      <NotFoundComponent />
+    );
+  }
 
   return (
     <>
@@ -73,12 +83,25 @@ function MainPageScreen(): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </Link>
-                <button className="btn btn--list film-card__button" type="button">
+                <button
+                  className="btn btn--list film-card__button"
+                  type="button"
+                  onClick={() => {
+                    if (authorizationStatus !== AuthorizationStatus.Auth) {
+                      dispatch(redirectToRoute(AppRoute.SignIn));
+                    }
+                    dispatch(changeFilmStatusAction({
+                      filmId: Number(promoFilm.id),
+                      status: Number(!promoFilm?.isFavorite),
+                    }));
+                  }}
+                >
                   <svg viewBox="0 0 19 20" width="19" height="20">
                     <use xlinkHref="#add"></use>
                   </svg>
+
                   <span>My list</span>
-                  <span className="film-card__count">9</span>
+                  <span className="film-card__count">{favoriteFilmsList.length}</span>
                 </button>
               </div>
             </div>

@@ -1,13 +1,14 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state.js';
-import { loadComments, loadFilm, loadMovies, loadPromoFilm, loadSimilarFilms, postComment, requireAuthorization, setDataLoadedStatus} from './action';
+import { changeFilmStatus, loadComments, loadFilm, loadMovies, loadPromoFilm, loadSimilarFilms, postComment, requireAuthorization, setDataLoadedStatus} from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AuthorizationStatus} from '../const';
 import {AuthData} from '../types/auth-data';
 import {UserData} from '../types/user-data';
 import { Film, Filmslist } from '../types/films.js';
 import { PostCommentData } from '../types/post-comment-data.js';
+import { ChangeFilmStatusData } from '../types/film-status-data.js';
 
 export const fetchMovieAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch,
@@ -122,5 +123,33 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     await api.delete(APIRoute.Logout);
     dropToken();
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+  },
+);
+
+export const fetchFavoriteFilmsAction = createAsyncThunk<Film[], undefined, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchFavoriteFilms',
+  async (_arg, {extra: api}) => {
+    const {data} = await api.get<Film[]>(APIRoute.Favorite);
+    // eslint-disable-next-line no-console
+    console.log(data);
+    return data;
+  },
+);
+
+export const changeFilmStatusAction = createAsyncThunk<void, ChangeFilmStatusData, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/changeFilmStatus',
+  async ({filmId, status}, {dispatch, extra: api}) => {
+    const {data} = await api.post<ChangeFilmStatusData>(`${APIRoute.Favorite}/${filmId}/${status}`, {filmId, status});
+    // eslint-disable-next-line no-console
+    console.log(data);
+    dispatch(changeFilmStatus(data));
   },
 );

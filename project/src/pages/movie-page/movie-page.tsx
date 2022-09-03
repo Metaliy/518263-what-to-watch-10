@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
 import { HeaderComponent } from '../../components/header-component';
-import NotFoundComponent from '../../components/not-found-component/not-found-component';
 import { PageTabsComponent } from '../../components/page-tabs-components/page-tabs-component';
+import Spinner from '../../components/spinner/spinner';
 import { AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCommentsAction, fetchFilmAction, fetchSimilarFilmsAction } from '../../store/api-actions';
@@ -20,11 +20,11 @@ export function MoviePageScreen() {
     dispatch(fetchCommentsAction(Number(id)));
     dispatch(fetchFilmAction(Number(id)));
     dispatch(fetchSimilarFilmsAction(Number(id)));
-  }, [id]);
+  }, [dispatch, id]);
 
   if(!film) {
     return (
-      <NotFoundComponent />
+      <Spinner />
     );
   }
 

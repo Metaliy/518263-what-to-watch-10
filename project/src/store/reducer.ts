@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { AuthorizationStatus} from '../const';
 import { Review } from '../types/comments';
 import { Film } from '../types/films';
-import { changeGenre, getAvatarUrl, loadComments, loadFilm, loadMovies, loadPromoFilm, loadSimilarFilms, requireAuthorization, setDataLoadedStatus } from './action';
+import { changeFilmStatus, changeGenre, getAvatarUrl, loadComments, loadFilm, loadMovies, loadPromoFilm, loadSimilarFilms, requireAuthorization, setDataLoadedStatus } from './action';
 
 type InitialState = {
   genre: string,
@@ -14,7 +14,8 @@ type InitialState = {
   comments: Review[],
   similarFilmsList: Film[],
   film: Film | undefined ,
-  avatarUrl: string | undefined
+  avatarUrl: string | undefined,
+  favoriteFilmsList: Film[]
 }
 
 
@@ -28,7 +29,8 @@ const initialState: InitialState = {
   comments: [],
   similarFilmsList: [],
   film: undefined,
-  avatarUrl: ''
+  avatarUrl: '',
+  favoriteFilmsList: []
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -59,7 +61,10 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(getAvatarUrl, (state, action) => {
       state.avatarUrl = action.payload;
-    });
+    })
+    .addCase(changeFilmStatus, (state, action) => {
+      state.favoriteFilmsList = action.payload;
+    } );
 });
 
 export {reducer};

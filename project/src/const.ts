@@ -31,7 +31,8 @@ export enum APIRoute {
   Logout = '/logout',
   Promo = '/promo',
   Film = '/films/',
-  Comments = '/comments/'
+  Comments = '/comments/',
+  Favorite = '/favorite'
 }
 
 
@@ -46,3 +47,12 @@ export enum Rating {
 
 export const MIN_REVIEW_LENGTH = 50;
 export const MAX_REVIEW_LENGTH = 400;
+
+export const MIN_PASSWORD_LENGTH = 50;
+
+export enum ProgressBar {
+  Start = 0,
+  End = 100,
+}
+
+export const invalidPasswordMessage = 'The password must be at least two characters and contain at least one number and one letter';

@@ -1,10 +1,18 @@
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { HeaderComponent } from '../../components/header-component';
+import { fetchFavoriteFilmsAction } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 
 function MyListScreen() {
-  const {filmList} = useAppSelector((state) => state);
+  const {favoriteFilmsList} = useAppSelector((state) => state);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchFavoriteFilmsAction());
+  }, [dispatch]);
+
   return (
     <div className="user-page">
       <HeaderComponent />
@@ -13,7 +21,7 @@ function MyListScreen() {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-          <FilmsListComponent films={filmList} />
+          <FilmsListComponent films={favoriteFilmsList} />
         </div>
       </section>
 

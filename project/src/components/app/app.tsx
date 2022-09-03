@@ -1,6 +1,6 @@
 import MainPageScreen from '../../pages/main-page/main-page';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
-import AddReviewPageScreen from '../../pages/add-review-page/add-review-page';
+import { AddReviewPageScreen } from '../../pages/add-review-page/add-review-page';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import NotFoundComponent from '../not-found-component/not-found-component';
 import { MoviePageScreen } from '../../pages/movie-page/movie-page';
@@ -39,7 +39,11 @@ function App(): JSX.Element {
         <Route
           path={AppRoute.AddReview}
           element={
-            < AddReviewPageScreen />
+            <PrivateRoute
+              authorizationStatus={authorizationStatus}
+            >
+              <AddReviewPageScreen />
+            </PrivateRoute>
           }
         />
         <Route

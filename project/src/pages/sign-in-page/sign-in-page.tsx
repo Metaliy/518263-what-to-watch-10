@@ -1,21 +1,25 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Footer } from '../../components/footer-component/footerComponent';
 import { HeaderComponent } from '../../components/header-component';
-import { AppRoute, AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus, invalidPasswordMessage } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
 import { AuthData } from '../../types/auth-data';
+import { validatePassword } from '../../utils/validate-password';
 
 function SignInPageScreen() {
 
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
+  const [isCorrectPassword, setCorrectPassword] = useState(false);
+  const [errorMessage, setErrorMEssage] = useState('');
+  const [errorFieldClass, seterrorClass] = useState('');
+
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const {authorizationStatus} = useAppSelector((state) => state);
-
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
@@ -25,10 +29,22 @@ function SignInPageScreen() {
     evt.preventDefault();
 
     if(emailRef.current !== null && passwordRef.current !== null) {
-      onSubmit({
-        login: emailRef.current.value,
-        password: passwordRef.current.value,
-      });
+      if(passwordRef.current?.value) {
+        // eslint-disable-next-line no-console
+        console.log(emailRef.current.value, passwordRef.current.value);
+        if(validatePassword(passwordRef.current?.value)) {
+          setCorrectPassword(true);
+        }
+      }
+      if (!isCorrectPassword) {
+        seterrorClass('sign-in__field--error');
+        setErrorMEssage(invalidPasswordMessage);
+      } else {
+        onSubmit({
+          login: emailRef.current.value,
+          password: passwordRef.current.value,
+        });
+      }
     }
   };
 
@@ -42,6 +58,9 @@ function SignInPageScreen() {
           className='sign-in__form'
           onSubmit={handleSubmitForm}
         >
+          <div className="sign-in__message">
+            <p>{errorMessage}</p>
+          </div>
           <div className='sign-in__fields'>
             <div className='sign-in__field'>
               <input
@@ -54,7 +73,7 @@ function SignInPageScreen() {
               />
               <label className='sign-in__label visually-hidden' htmlFor='user-email'>Email address</label>
             </div>
-            <div className='sign-in__field'>
+            <div className={`sign-in__field ${errorFieldClass}`} >
               <input
                 ref={passwordRef}
                 className='sign-in__input'
