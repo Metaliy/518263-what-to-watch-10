@@ -12,6 +12,7 @@ export function AddReviewPageScreen() {
   if (!id) {
     return null;
   }
+
   const film = filmList.find((element) => Number(element.id ) === Number(id));
 
   if (!film) {
