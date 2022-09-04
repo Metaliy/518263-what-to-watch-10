@@ -28,3 +28,8 @@ export const postComment = createAction('data/postComment', (value) => ({payload
 export const getAvatarUrl = createAction('data/getAvatarUrl', (value) => ({payload: value}));
 
 export const changeFilmStatus = createAction('data/changeFilmStatus', (value) => ({payload: value}));
+
+export const loadFavoriteFilmsList = createAction('data/loadFavoriteFilmsList', (value) => ({payload: value}));
+
+export const changePostCommentErrorStatus = createAction('data/changePostCommentErrorStatus', (value) => ({payload: value}));
+

@@ -1,26 +1,39 @@
 // import { useEffect } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import { FavoriteButtonIcon } from '../../components/favorite-button-icon/favorite-button-icon';
 import {FilmsListComponent} from '../../components/films-list/films-list-component';
 import { HeaderComponent } from '../../components/header-component';
 import { PageTabsComponent } from '../../components/page-tabs-components/page-tabs-component';
 import Spinner from '../../components/spinner/spinner';
-import { AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchCommentsAction, fetchFilmAction, fetchSimilarFilmsAction } from '../../store/api-actions';
+import { redirectToRoute } from '../../store/action';
+import { changeFilmStatusAction, fetchCommentsAction, fetchFavoriteFilmsAction, fetchFilmAction, fetchSimilarFilmsAction } from '../../store/api-actions';
 
 export function MoviePageScreen() {
-  const { film, similarFilmsList, authorizationStatus} = useAppSelector((state) => state);
+  const { film, similarFilmsList, authorizationStatus, favoriteFilmsList} = useAppSelector((state) => state);
   const { id } = useParams();
+
+  const [filmFavoriteStatus, setFilmFavoriteStatus] = useState(film?.isFavorite);
 
   const dispatch = useAppDispatch();
 
 
   useEffect(() => {
+    setFilmFavoriteStatus(film?.isFavorite);
     dispatch(fetchCommentsAction(Number(id)));
     dispatch(fetchFilmAction(Number(id)));
     dispatch(fetchSimilarFilmsAction(Number(id)));
-  }, [dispatch, id]);
+    dispatch(fetchFavoriteFilmsAction());
+  }, [dispatch, film?.isFavorite, id]);
+
+  useEffect(() => {
+    if(authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(fetchFilmAction(Number(id)));
+      dispatch(fetchFavoriteFilmsAction());
+    }
+  }, [dispatch, filmFavoriteStatus, authorizationStatus]);
 
   if(!film) {
     return (
@@ -55,13 +68,27 @@ export function MoviePageScreen() {
                   </svg>
                   <span>Play</span>
                 </Link>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
+                <button
+                  className="btn btn--list film-card__button"
+                  type="button"
+                  onClick={() => {
+                    if (authorizationStatus !== AuthorizationStatus.Auth) {
+                      dispatch(redirectToRoute(AppRoute.SignIn));
+                    } else {
+                      setFilmFavoriteStatus(!film.isFavorite);
+                      dispatch(changeFilmStatusAction({
+                        filmId: Number(film.id),
+                        status: Number(!film.isFavorite),
+                      }));
+                    }
+                  }}
+                >
+                  <FavoriteButtonIcon favoriteStatus={filmFavoriteStatus} authorizationStatus={authorizationStatus} />
+
                   <span>My list</span>
-                  <span className="film-card__count">9</span>
-                </button> {authorizationStatus === AuthorizationStatus.Auth && <Link to ={`/films/${ id }/review`} className="btn film-card__button">Add review</Link>}
+                  <span className="film-card__count">{favoriteFilmsList.length}</span>
+                </button>
+                {authorizationStatus === AuthorizationStatus.Auth && <Link to ={`/films/${ id }/review`} className="btn film-card__button">Add review</Link>}
 
               </div>
             </div>

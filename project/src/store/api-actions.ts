@@ -1,7 +1,7 @@
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state.js';
-import { changeFilmStatus, loadComments, loadFilm, loadMovies, loadPromoFilm, loadSimilarFilms, postComment, requireAuthorization, setDataLoadedStatus} from './action';
+import { changeFilmStatus, changePostCommentErrorStatus, loadComments, loadFavoriteFilmsList, loadFilm, loadMovies, loadPromoFilm, loadSimilarFilms, postComment, requireAuthorization, setDataLoadedStatus} from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AuthorizationStatus} from '../const';
 import {AuthData} from '../types/auth-data';
@@ -33,6 +33,18 @@ export const fetchPromoFilmAction = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     const {data} = await api.get<Film>(APIRoute.Promo);
     dispatch(loadPromoFilm(data));
+  },
+);
+
+export const fetchFavoriteFilmsAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchFavoriteFilms',
+  async (_arg, {dispatch, extra: api}) => {
+    const {data} = await api.get<Film[]>(APIRoute.Favorite);
+    dispatch(loadFavoriteFilmsList(data));
   },
 );
 
@@ -79,8 +91,13 @@ export const postCommentAction = createAsyncThunk<void, PostCommentData, {
 }>(
   'data/postComment',
   async ({comment, rating, filmId}, {dispatch, extra: api}) => {
-    const {data} = await api.post<PostCommentData>(`${APIRoute.Comments}${filmId}`, {comment, rating});
-    dispatch(postComment(data));
+    try {
+      const {data} = await api.post<PostCommentData>(`${APIRoute.Comments}${filmId}`, {comment, rating});
+      dispatch(postComment(data));
+    }
+    catch (error) {
+      dispatch(changePostCommentErrorStatus(true));
+    }
   },
 );
 
@@ -126,19 +143,6 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const fetchFavoriteFilmsAction = createAsyncThunk<Film[], undefined, {
-  dispatch: AppDispatch,
-  state: State,
-  extra: AxiosInstance
-}>(
-  'data/fetchFavoriteFilms',
-  async (_arg, {extra: api}) => {
-    const {data} = await api.get<Film[]>(APIRoute.Favorite);
-    // eslint-disable-next-line no-console
-    console.log(data);
-    return data;
-  },
-);
 
 export const changeFilmStatusAction = createAsyncThunk<void, ChangeFilmStatusData, {
   dispatch: AppDispatch,
@@ -148,8 +152,7 @@ export const changeFilmStatusAction = createAsyncThunk<void, ChangeFilmStatusDat
   'data/changeFilmStatus',
   async ({filmId, status}, {dispatch, extra: api}) => {
     const {data} = await api.post<ChangeFilmStatusData>(`${APIRoute.Favorite}/${filmId}/${status}`, {filmId, status});
-    // eslint-disable-next-line no-console
-    console.log(data);
+
     dispatch(changeFilmStatus(data));
   },
 );

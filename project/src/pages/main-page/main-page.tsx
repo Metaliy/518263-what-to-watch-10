@@ -8,9 +8,10 @@ import { ShowMoreComponent } from '../../components/show-more-component/show-mor
 import { useEffect, useState } from 'react';
 import { getFilteredFilmList } from '../../utils/film-filter';
 import { HeaderComponent } from '../../components/header-component';
-import { redirectToRoute } from '../../store/action';
-import { changeFilmStatusAction } from '../../store/api-actions';
+import { changeGenre, redirectToRoute } from '../../store/action';
+import { changeFilmStatusAction, fetchFavoriteFilmsAction, fetchPromoFilmAction } from '../../store/api-actions';
 import NotFoundComponent from '../../components/not-found-component/not-found-component';
+import { FavoriteButtonIcon } from '../../components/favorite-button-icon/favorite-button-icon';
 
 
 function MainPageScreen(): JSX.Element {
@@ -21,7 +22,9 @@ function MainPageScreen(): JSX.Element {
   const [renderedFilmsCount, setRenderedFilmsCount] = useState(FILMS_COUNT_PER_STEP);
   const [ShowMoreComponentVisibility, setShowMoreComponentVisibility] = useState(true);
   const [filteredFilmList, setFilteredFilmList] = useState(getFilteredFilmList(filmList, activeGenre));
+  const [promoFilmFavoriteStatus, setPromoFilmFavoriteStatus] = useState(promoFilm?.isFavorite);
 
+  let favoriteFilmsCount = favoriteFilmsList.length;
 
   const handleLoadMoreButtonClick = () => {
     if (renderedFilmsCount >= filmList.length) {
@@ -44,6 +47,21 @@ function MainPageScreen(): JSX.Element {
     }
 
   }, [renderedFilmsCount, filteredFilmList.length, ShowMoreComponentVisibility, activeGenre, filmList]);
+
+  useEffect(() => {
+    if(authorizationStatus === AuthorizationStatus.Auth) {
+      favoriteFilmsCount = favoriteFilmsList.length;
+      dispatch(fetchFavoriteFilmsAction());
+      dispatch(fetchPromoFilmAction());
+    }
+  }, [dispatch, promoFilmFavoriteStatus, authorizationStatus]);
+
+  useEffect(() => {
+    setPromoFilmFavoriteStatus(promoFilm?.isFavorite);
+    dispatch(fetchPromoFilmAction());
+    dispatch(changeGenre('All genres'));
+    dispatch(fetchFavoriteFilmsAction());
+  }, [dispatch]);
 
   if (!promoFilm) {
     return (
@@ -89,19 +107,19 @@ function MainPageScreen(): JSX.Element {
                   onClick={() => {
                     if (authorizationStatus !== AuthorizationStatus.Auth) {
                       dispatch(redirectToRoute(AppRoute.SignIn));
+                    } else {
+                      setPromoFilmFavoriteStatus(!promoFilm.isFavorite);
+                      dispatch(changeFilmStatusAction({
+                        filmId: Number(promoFilm.id),
+                        status: Number(!promoFilm.isFavorite),
+                      }));
                     }
-                    dispatch(changeFilmStatusAction({
-                      filmId: Number(promoFilm.id),
-                      status: Number(!promoFilm?.isFavorite),
-                    }));
                   }}
                 >
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
-                  </svg>
+                  <FavoriteButtonIcon favoriteStatus={promoFilmFavoriteStatus} authorizationStatus={authorizationStatus} />
 
                   <span>My list</span>
-                  <span className="film-card__count">{favoriteFilmsList.length}</span>
+                  <span className="film-card__count">{favoriteFilmsCount}</span>
                 </button>
               </div>
             </div>

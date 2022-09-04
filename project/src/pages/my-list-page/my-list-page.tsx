@@ -20,9 +20,7 @@ function MyListScreen() {
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-        <div className="catalog__films-list">
-          <FilmsListComponent films={favoriteFilmsList} />
-        </div>
+        <FilmsListComponent films={favoriteFilmsList} />
       </section>
 
       <footer className="page-footer">

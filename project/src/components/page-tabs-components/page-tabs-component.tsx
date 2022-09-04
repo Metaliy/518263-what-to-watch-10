@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 import { DetailsTabComponent } from './details-tab-component';
 import { OverviewTabComponent } from './overview-tab-component';
 import { ReviewsTabComponent } from './reviews-tab-component';
-import { tabNames } from '../../const';
+import { TabName } from '../../const';
 
 
 export function PageTabsComponent () {
-  const [activeTab, setActiveTab] = useState(tabNames.Overview);
+  const [activeTab, setActiveTab] = useState(TabName.Overview);
   const renderTab = (tab: string) => {
     switch (tab) {
-      case tabNames.Overview:
+      case TabName.Overview:
         return < OverviewTabComponent />;
-      case tabNames.Details:
+      case TabName.Details:
         return <DetailsTabComponent />;
-      case tabNames.Reviews:
+      case TabName.Reviews:
         return <ReviewsTabComponent />;
     }
   };
@@ -24,13 +24,13 @@ export function PageTabsComponent () {
       <nav className="film-nav film-card__nav">
         <ul className="film-nav__list">
           <li className="film-nav__item">
-            <Link className="film-nav__link" onClick={() => setActiveTab(tabNames.Overview)} to={''}>Overview</Link>
+            <Link className="film-nav__link" onClick={() => setActiveTab(TabName.Overview)} to={''}>Overview</Link>
           </li>
           <li className="film-nav__item">
-            <Link className='film-nav__link' onClick={() => setActiveTab(tabNames.Details)} to={''}>Details</Link>
+            <Link className='film-nav__link' onClick={() => setActiveTab(TabName.Details)} to={''}>Details</Link>
           </li>
           <li className="film-nav__item">
-            <Link className="film-nav__link" onClick={() => setActiveTab(tabNames.Reviews)} to={''}>Reviews</Link>
+            <Link className="film-nav__link" onClick={() => setActiveTab(TabName.Reviews)} to={''}>Reviews</Link>
           </li>
         </ul>
       </nav>

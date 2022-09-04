@@ -12,7 +12,7 @@ function SignInPageScreen() {
 
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const [isCorrectPassword, setCorrectPassword] = useState(false);
+  //  const [isCorrectPassword, setCorrectPassword] = useState(false);
   const [errorMessage, setErrorMEssage] = useState('');
   const [errorFieldClass, seterrorClass] = useState('');
 
@@ -29,14 +29,8 @@ function SignInPageScreen() {
     evt.preventDefault();
 
     if(emailRef.current !== null && passwordRef.current !== null) {
-      if(passwordRef.current?.value) {
-        // eslint-disable-next-line no-console
-        console.log(emailRef.current.value, passwordRef.current.value);
-        if(validatePassword(passwordRef.current?.value)) {
-          setCorrectPassword(true);
-        }
-      }
-      if (!isCorrectPassword) {
+
+      if (!(validatePassword(passwordRef.current?.value))) {
         seterrorClass('sign-in__field--error');
         setErrorMEssage(invalidPasswordMessage);
       } else {
@@ -45,6 +39,10 @@ function SignInPageScreen() {
           password: passwordRef.current.value,
         });
       }
+    }
+
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      navigate(AppRoute.Root);
     }
   };
 
@@ -87,12 +85,6 @@ function SignInPageScreen() {
           </div>
           <div className='sign-in__submit'>
             <button
-              onClick={() =>
-              {
-                if (authorizationStatus === AuthorizationStatus.Auth) {
-                  navigate(AppRoute.Root);
-                }
-              }}
               className='sign-in__btn'
               type='submit'
             >

@@ -2,20 +2,20 @@ import { createReducer } from '@reduxjs/toolkit';
 import { AuthorizationStatus} from '../const';
 import { Review } from '../types/comments';
 import { Film } from '../types/films';
-import { changeFilmStatus, changeGenre, getAvatarUrl, loadComments, loadFilm, loadMovies, loadPromoFilm, loadSimilarFilms, requireAuthorization, setDataLoadedStatus } from './action';
+import { changeGenre, changePostCommentErrorStatus, getAvatarUrl, loadComments, loadFavoriteFilmsList, loadFilm, loadMovies, loadPromoFilm, loadSimilarFilms, requireAuthorization, setDataLoadedStatus } from './action';
 
 type InitialState = {
   genre: string,
   filmList: Film[],
   authorizationStatus: AuthorizationStatus,
   isDataLoaded: boolean,
-  renderedFilmCount: number,
   promoFilm: Film | null,
   comments: Review[],
   similarFilmsList: Film[],
   film: Film | undefined ,
   avatarUrl: string | undefined,
-  favoriteFilmsList: Film[]
+  favoriteFilmsList: Film[],
+  isCommentPosterror: boolean
 }
 
 
@@ -24,13 +24,13 @@ const initialState: InitialState = {
   filmList: [],
   authorizationStatus: AuthorizationStatus.Unknown,
   isDataLoaded: true,
-  renderedFilmCount: 0,
   promoFilm:  null,
   comments: [],
   similarFilmsList: [],
   film: undefined,
   avatarUrl: '',
-  favoriteFilmsList: []
+  favoriteFilmsList: [],
+  isCommentPosterror: false
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -62,9 +62,12 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(getAvatarUrl, (state, action) => {
       state.avatarUrl = action.payload;
     })
-    .addCase(changeFilmStatus, (state, action) => {
+    .addCase(loadFavoriteFilmsList, (state, action) => {
       state.favoriteFilmsList = action.payload;
-    } );
+    })
+    .addCase(changePostCommentErrorStatus, (state, action) => {
+      state.isCommentPosterror = action.payload;
+    });
 });
 
 export {reducer};

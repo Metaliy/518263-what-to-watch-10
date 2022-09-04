@@ -13,13 +13,13 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export enum tabNames {
+export enum TabName {
   Overview = 'Overview',
   Details = 'Details',
   Reviews = 'Reviews'
 }
 
-export const timeOut = 1000;
+export const timeout = 1000;
 
 
 export const FILMS_COUNT_PER_STEP = 8;

@@ -1,4 +1,4 @@
-import { timeOut } from '../../const';
+import { timeout } from '../../const';
 import { useEffect, useRef } from 'react';
 
 type VideoPlayerComponentProps = {
@@ -12,7 +12,7 @@ export function VideoPlayerComponent ({src, poster}:VideoPlayerComponentProps) {
   useEffect(() => {
     const playFocusCardVideo = setTimeout(() =>
       videoRef.current && videoRef.current.play(),
-    timeOut);
+    timeout);
 
     return () => clearTimeout(playFocusCardVideo);
 

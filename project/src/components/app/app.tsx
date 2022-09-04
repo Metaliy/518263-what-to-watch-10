@@ -1,5 +1,5 @@
 import MainPageScreen from '../../pages/main-page/main-page';
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import { AddReviewPageScreen } from '../../pages/add-review-page/add-review-page';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import NotFoundComponent from '../not-found-component/not-found-component';
@@ -10,6 +10,8 @@ import SignInPageScreen from '../../pages/sign-in-page/sign-in-page';
 import PlayerPageScreen from '../../pages/player-page/player-page';
 import { useAppSelector } from '../../hooks';
 import Spinner from '../spinner/spinner';
+import HistoryRouter from '../history-router/history-router';
+import browserHistory from '../../browser-history';
 
 
 function App(): JSX.Element {
@@ -28,7 +30,7 @@ function App(): JSX.Element {
   }
 
   return (
-    <BrowserRouter>
+    <HistoryRouter history= {browserHistory}>
       <Routes>
         <Route
           path={AppRoute.Root}
@@ -77,7 +79,7 @@ function App(): JSX.Element {
           element={<NotFoundComponent />}
         />
       </Routes>
-    </BrowserRouter>);
+    </HistoryRouter>);
 }
 
 export default App;
