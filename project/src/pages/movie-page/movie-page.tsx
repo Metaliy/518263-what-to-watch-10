@@ -33,7 +33,7 @@ export function MoviePageScreen() {
       dispatch(fetchFilmAction(Number(id)));
       dispatch(fetchFavoriteFilmsAction());
     }
-  }, [dispatch, filmFavoriteStatus, authorizationStatus]);
+  }, [dispatch, filmFavoriteStatus]);
 
   if(!film) {
     return (

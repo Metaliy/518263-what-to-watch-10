@@ -8,7 +8,7 @@ import { ShowMoreComponent } from '../../components/show-more-component/show-mor
 import { useEffect, useState } from 'react';
 import { getFilteredFilmList } from '../../utils/film-filter';
 import { HeaderComponent } from '../../components/header-component';
-import { changeGenre, redirectToRoute } from '../../store/action';
+import { redirectToRoute } from '../../store/action';
 import { changeFilmStatusAction, fetchFavoriteFilmsAction, fetchPromoFilmAction } from '../../store/api-actions';
 import NotFoundComponent from '../../components/not-found-component/not-found-component';
 import { FavoriteButtonIcon } from '../../components/favorite-button-icon/favorite-button-icon';
@@ -38,6 +38,7 @@ function MainPageScreen(): JSX.Element {
     setRenderedFilmsCount(FILMS_COUNT_PER_STEP);
   };
 
+
   useEffect(() => {
     setFilteredFilmList(getFilteredFilmList(filmList, activeGenre));
     if (renderedFilmsCount >= FILMS_COUNT_PER_STEP && renderedFilmsCount < filteredFilmList.length) {
@@ -50,7 +51,6 @@ function MainPageScreen(): JSX.Element {
 
   useEffect(() => {
     if(authorizationStatus === AuthorizationStatus.Auth) {
-      favoriteFilmsCount = favoriteFilmsList.length;
       dispatch(fetchFavoriteFilmsAction());
       dispatch(fetchPromoFilmAction());
     }
@@ -59,9 +59,9 @@ function MainPageScreen(): JSX.Element {
   useEffect(() => {
     setPromoFilmFavoriteStatus(promoFilm?.isFavorite);
     dispatch(fetchPromoFilmAction());
-    dispatch(changeGenre('All genres'));
     dispatch(fetchFavoriteFilmsAction());
-  }, [dispatch]);
+    favoriteFilmsCount = favoriteFilmsList.length;
+  }, [promoFilm?.isFavorite, authorizationStatus]);
 
   if (!promoFilm) {
     return (

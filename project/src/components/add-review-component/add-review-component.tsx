@@ -37,8 +37,6 @@ export function AddReviewComponent () {
   }, [isCorrectReview]);
 
   useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log(isCommentPosterror);
     if (isCommentPosterror) {
       toast.error('Error. Comment not sent, please try again later');
       dispatch(changePostCommentErrorStatus(false));
@@ -58,7 +56,7 @@ export function AddReviewComponent () {
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    if(isCorrectReview && !isCommentPosterror) {
+    if(isCorrectReview) {
       onSubmit({
         rating: stateRating,
         comment: stateText,
@@ -66,7 +64,6 @@ export function AddReviewComponent () {
       });
       SetPostFormDisabled(true);
       setPostButtonDisabled(true);
-      toast.info('Comment sent successfull.');
       window.history.back();
     }
   };

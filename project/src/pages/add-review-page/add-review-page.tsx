@@ -6,7 +6,7 @@ import NotFoundComponent from '../../components/not-found-component/not-found-co
 
 
 export function AddReviewPageScreen() {
-  const {filmList} = useAppSelector((state) => state);
+  const {filmList, isCommentPosterror} = useAppSelector((state) => state);
   const {id} = useParams();
 
   if (!id) {
@@ -15,6 +15,10 @@ export function AddReviewPageScreen() {
   const film = filmList.find((element) => Number(element.id ) === Number(id));
 
   if (!film) {
+    return <NotFoundComponent />;
+  }
+
+  if (isCommentPosterror) {
     return <NotFoundComponent />;
   }
   return (
