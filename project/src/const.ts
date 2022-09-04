@@ -19,7 +19,7 @@ export enum TabName {
   Reviews = 'Reviews'
 }
 
-export const TIMEOUT = 1000;
+export const TIME_OUT = 1000;
 
 
 export const FILMS_COUNT_PER_STEP = 8;
